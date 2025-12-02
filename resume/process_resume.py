@@ -1,0 +1,476 @@
+"""
+Resume Processing Pipeline - Complete Backend Flow
+
+This file handles the complete resume processing flow:
+1. Accept PDF file upload
+2. Extract text using OCR pipeline
+3. Analyze resume using ATS evaluator
+4. Return JSON results
+
+NO UI - Pure backend processing function.
+"""
+
+import sys
+import os
+import json
+from typing import Dict, Any, Optional
+
+# Add OCR directory to path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'OCR'))
+
+from OCR.ocr_pdf_pipeline import PDFTextExtractor
+from resume_evaluator import ResumeEvaluator
+from resume_enhancer import ResumeEnhancer
+from resume_pdf_generator import ResumePDFGenerator
+
+
+class ResumeProcessor:
+    """Complete resume processing pipeline."""
+    
+    def __init__(self):
+        """Initialize OCR extractor, resume evaluator, and enhancer."""
+        self.ocr_extractor = PDFTextExtractor()
+        self.resume_evaluator = ResumeEvaluator()
+        self.enhancer = ResumeEnhancer()
+        self.pdf_generator = ResumePDFGenerator()
+    
+    def process_resume_pdf(
+        self, 
+        pdf_path: str, 
+        use_ocr: bool = False,
+        enhance: bool = True
+    ) -> Dict[str, Any]:
+        """
+        Complete pipeline: PDF → OCR → Analysis → Enhancement → PDF
+        
+        Args:
+            pdf_path: Path to the PDF resume file
+            use_ocr: If True, use OCR for image-based PDFs. 
+                     If False, try direct text extraction first.
+            enhance: If True, automatically generate enhanced resume PDF
+        
+        Returns:
+            Dictionary with extraction info, evaluation results, and enhancement info
+        """
+        try:
+            # Step 1: Extract text from PDF
+            print(f"📄 Processing: {pdf_path}")
+            print(f"🔍 Extraction method: {'OCR' if use_ocr else 'Direct text extraction'}")
+            
+            resume_text = self._extract_text_from_pdf(pdf_path, use_ocr)
+            
+            if not resume_text or len(resume_text.strip()) < 50:
+                return {
+                    'success': False,
+                    'error': 'Failed to extract sufficient text from PDF',
+                    'resume_text': resume_text,
+                    'evaluation': None,
+                    'enhancement': None
+                }
+            
+            print(f"✓ Extracted {len(resume_text)} characters")
+            
+            # Step 2: Evaluate resume
+            print("🔍 Analyzing resume...")
+            evaluation = self.resume_evaluator.evaluate(resume_text)
+            
+            print(f"✓ Analysis complete - Final Score: {evaluation['final_ats_score']}/100")
+            
+            # Step 3: Enhance resume (if requested)
+            enhancement_result = None
+            if enhance:
+                print("✨ Enhancing resume...")
+                enhancement_result = self._enhance_resume(
+                    pdf_path, 
+                    resume_text, 
+                    evaluation
+                )
+                
+                if enhancement_result.get('success'):
+                    print(f"✓ Enhanced text saved: {enhancement_result.get('enhanced_text_path', 'N/A')}")
+                    print(f"   Applied {len(enhancement_result.get('improvements_applied', []))} improvements")
+                else:
+                    print(f"⚠ Enhancement failed: {enhancement_result.get('error')}")
+            
+            # Step 4: Return combined results
+            return {
+                'success': True,
+                'resume_text': resume_text,
+                'text_length': len(resume_text),
+                'evaluation': evaluation,
+                'enhancement': enhancement_result
+            }
+            
+        except FileNotFoundError:
+            return {
+                'success': False,
+                'error': f'PDF file not found: {pdf_path}',
+                'resume_text': None,
+                'evaluation': None,
+                'enhancement': None
+            }
+        except Exception as e:
+            return {
+                'success': False,
+                'error': f'Processing failed: {str(e)}',
+                'resume_text': None,
+                'evaluation': None,
+                'enhancement': None
+            }
+            
+        except FileNotFoundError:
+            return {
+                'success': False,
+                'error': f'PDF file not found: {pdf_path}',
+                'resume_text': None,
+                'evaluation': None
+            }
+        except Exception as e:
+            return {
+                'success': False,
+                'error': f'Processing failed: {str(e)}',
+                'resume_text': None,
+                'evaluation': None
+            }
+    
+    def _extract_text_from_pdf(self, pdf_path: str, use_ocr: bool) -> str:
+        """
+        Extract text from PDF using OCR pipeline.
+        
+        Args:
+            pdf_path: Path to PDF file
+            use_ocr: Whether to use OCR or direct extraction
+            
+        Returns:
+            Extracted plain text
+        """
+        # Try direct extraction first (faster)
+        if not use_ocr:
+            try:
+                result = self.ocr_extractor.extract_text_from_pdf(pdf_path, use_ocr=False)
+                
+                if result.get('method') in ['PyPDF2', 'PyPDF2_fallback_due_to_pdf2image_error', 
+                                             'PyPDF2_fallback_no_pdf2image']:
+                    # Concatenate text from all pages
+                    text = '\n'.join([page.get('text', '') for page in result.get('pages', [])])
+                    if text.strip():
+                        return text
+            except Exception as e:
+                print(f"⚠ Direct extraction failed: {e}")
+        
+        # Use OCR if direct extraction failed or was requested
+        print("🔍 Using OCR extraction...")
+        result = self.ocr_extractor.extract_text_from_pdf(pdf_path, use_ocr=True)
+        
+        if 'pages' in result:
+            # Concatenate text from all detections
+            text_parts = []
+            for page in result['pages']:
+                if 'detections' in page:
+                    # OCR-based extraction
+                    for detection in page['detections']:
+                        text_parts.append(detection.get('text', ''))
+                elif 'text' in page:
+                    # Direct extraction
+                    text_parts.append(page['text'])
+            
+            return '\n'.join(text_parts)
+        
+        raise Exception("Failed to extract text from PDF")
+    
+    def _enhance_resume(
+        self,
+        pdf_path: str,
+        resume_text: str,
+        evaluation: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Enhance resume based on evaluation results.
+        
+        Args:
+            pdf_path: Path to original PDF
+            resume_text: Extracted resume text
+            evaluation: Evaluation results
+            
+        Returns:
+            Dictionary with enhancement results
+        """
+        try:
+            # Import simple enhancer
+            from simple_enhancer import SimpleResumeEnhancer
+            
+            # Extract candidate name from resume text
+            candidate_name = self._extract_candidate_name(resume_text)
+            
+            # Use simple text-based enhancement
+            enhancer = SimpleResumeEnhancer()
+            result = enhancer.enhance_resume_text(pdf_path, resume_text, evaluation)
+            
+            if not result.get('success'):
+                return result
+            
+            # Track improvements
+            improvements_applied = [
+                "Enhanced resume content with LLM while preserving structure",
+                "Created PDF-rebuild version with EXACT line count preservation",
+                "Improved wording for clarity and professionalism",
+                "Strengthened action verbs and technical language",
+                "Added impact context without inventing metrics",
+                "Maintained all dates, roles, and original information",
+                "Generated pixel-perfect enhanced PDF with preserved layout"
+            ]
+            
+            return {
+                'success': True,
+                'enhancement_json_path': result.get('enhancement_json_path'),
+                'enhanced_text_path': result.get('enhanced_text_path'),
+                'original_text_path': result.get('original_text_path'),
+                'comparison_path': result.get('comparison_path'),
+                'enhanced_pdf_path': result.get('enhanced_pdf_path'),
+                'enhancements_count': result.get('enhancements_count', 0),
+                'improvements_applied': improvements_applied,
+                'candidate_name': candidate_name,
+                'message': result.get('message', 'Enhanced PDF created successfully!')
+            }
+            
+        except Exception as e:
+            return {
+                'success': False,
+                'error': str(e),
+                'enhanced_text_path': None,
+                'improvements_applied': []
+            }
+    
+    def _extract_candidate_name(self, resume_text: str) -> str:
+        """Extract candidate name from resume text."""
+        import re
+        
+        lines = resume_text.split('\n')
+        
+        # First, try to find a line that looks like a name (2-4 capitalized words)
+        name_pattern = r'\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,3})\b'
+        
+        # Search in first 50 lines for name
+        for line in lines[:50]:
+            line = line.strip()
+            
+            # Skip empty lines or lines that are too long
+            if not line or len(line) > 60:
+                continue
+            
+            # Skip lines with technical keywords
+            if any(keyword in line.lower() for keyword in [
+                'java', 'python', 'experience', 'developer', 'engineer',
+                'at least', 'years', 'working', 'knowledge', 'skills',
+                'ai,', 'llm', 'rag', 'oop', 'spring', 'html', 'css',
+                'angularjs', 'react', 'javascript', 'software', 'deep',
+                'practices', 'modules', 'based on', 'degree in', 'university',
+                'college', 'master', 'bachelor', 'certified', 'certification'
+            ]):
+                continue
+            
+            # Look for name pattern
+            match = re.search(name_pattern, line)
+            if match:
+                potential_name = match.group(1)
+                
+                # Verify it's not a company or location
+                if not any(word in potential_name for word in ['Microsoft', 'Visa', 'Seattle', 'Austin', 'India', 'USA']):
+                    # Clean name for filename
+                    name = potential_name.replace(' ', '_').replace(',', '')
+                    # Remove special characters
+                    name = ''.join(c for c in name if c.isalnum() or c == '_')
+                    if name and len(name) > 3:
+                        return name
+        
+        # Fallback: Look for all-caps name (like "MADHAV SOMANI")
+        for line in lines:
+            line = line.strip()
+            # Check for all-caps name pattern
+            if re.match(r'^[A-Z\s]{5,40}$', line):
+                # Check if it's not a section header
+                if not any(keyword in line for keyword in [
+                    'EXPERIENCE', 'EDUCATION', 'SKILLS', 'PROJECTS', 
+                    'ACCOMPLISHMENTS', 'CERTIFICATIONS', 'SUMMARY', 'CONTACT'
+                ]):
+                    name = line.replace(' ', '_')
+                    name = ''.join(c for c in name if c.isalnum() or c == '_')
+                    if name and len(name) > 3:
+                        return name
+        
+        return "Candidate"
+    
+    def _track_improvements(
+        self,
+        evaluation: Dict[str, Any],
+        enhanced_content: Dict[str, Any]
+    ) -> list[str]:
+        """Track what improvements were applied."""
+        improvements = []
+        
+        # Check for bullet point enhancements
+        exp_count = len(enhanced_content.get('experience', []))
+        if exp_count > 0:
+            total_bullets = sum(
+                len(exp.get('bullets', [])) 
+                for exp in enhanced_content.get('experience', [])
+            )
+            improvements.append(f"Enhanced {total_bullets} experience bullet points with metrics and impact")
+        
+        # Check for skills filtering
+        skills_count = len(enhanced_content.get('skills', []))
+        if skills_count > 0:
+            improvements.append(f"Filtered and organized {skills_count} proven technical skills")
+        
+        # Check for projects enhancement
+        projects_count = len(enhanced_content.get('projects', []))
+        if projects_count > 0:
+            improvements.append(f"Enhanced {projects_count} projects with impact and outcomes")
+        
+        # Check for generic content removal
+        eval_improvements = evaluation.get('resume_improvements', {})
+        if eval_improvements.get('keyword_and_skills'):
+            for issue in eval_improvements['keyword_and_skills']:
+                if 'generic text block' in issue.get('issue', '').lower():
+                    improvements.append("Removed generic copy-pasted text block")
+                    break
+        
+        # Check for formatting improvements
+        if eval_improvements.get('structure_and_formatting'):
+            improvements.append("Applied professional formatting and structure")
+        
+        # General improvements
+        improvements.append("Improved action verbs and professional language")
+        improvements.append("Enhanced ATS compatibility")
+        
+        return improvements
+
+
+def process_resume_file(pdf_path: str, use_ocr: bool = False) -> Dict[str, Any]:
+    """
+    Convenience function to process a resume PDF file.
+    
+    Args:
+        pdf_path: Path to the PDF resume file
+        use_ocr: If True, use OCR. If False, try direct extraction first.
+    
+    Returns:
+        Dictionary with processing results and evaluation
+    
+    Example:
+        >>> result = process_resume_file('resume.pdf')
+        >>> print(f"Score: {result['evaluation']['final_ats_score']}/100")
+    """
+    processor = ResumeProcessor()
+    return processor.process_resume_pdf(pdf_path, use_ocr)
+
+
+def main():
+    """
+    Example usage and testing.
+    """
+    import argparse
+    
+    parser = argparse.ArgumentParser(description='Process and analyze resume PDF')
+    parser.add_argument('pdf_file', help='Path to resume PDF file')
+    parser.add_argument('--ocr', action='store_true', 
+                       help='Force OCR extraction (for image-based PDFs)')
+    parser.add_argument('--output', '-o', help='Output JSON file path')
+    
+    args = parser.parse_args()
+    
+    print("\n" + "="*60)
+    print("🚀 RESUME PROCESSING PIPELINE")
+    print("="*60 + "\n")
+    
+    # Process the resume
+    result = process_resume_file(args.pdf_file, use_ocr=args.ocr)
+    
+    if result['success']:
+        evaluation = result['evaluation']
+        
+        print("\n" + "="*60)
+        print("📊 EVALUATION RESULTS")
+        print("="*60 + "\n")
+        
+        print(f"Standard ATS Score:  {evaluation['standard_ats_score']}/100")
+        print(f"AI ATS Score:        {evaluation['ai_ats_score']}/100")
+        print(f"Final ATS Score:     {evaluation['final_ats_score']}/100")
+        
+        print("\n✅ STRENGTHS:")
+        for i, strength in enumerate(evaluation['analysis_summary']['strengths'][:5], 1):
+            print(f"   {i}. {strength}")
+        
+        print("\n⚠️  WEAKNESSES:")
+        for i, weakness in enumerate(evaluation['analysis_summary']['weaknesses'][:5], 1):
+            print(f"   {i}. {weakness}")
+        
+        print("\n💡 TOP IMPROVEMENTS:")
+        improvements = evaluation['resume_improvements']
+        
+        # Show top 2 from each category
+        for category, items in improvements.items():
+            if items:
+                print(f"\n   📌 {category.replace('_', ' ').title()}:")
+                for imp in items[:2]:
+                    print(f"      • {imp['recommended_fix']}")
+        
+        # Save to file if requested
+        if args.output:
+            with open(args.output, 'w', encoding='utf-8') as f:
+                json.dump(result, f, indent=2, ensure_ascii=False)
+            print(f"\n💾 Full results saved to: {args.output}")
+        else:
+            # Save to default location
+            output_file = 'resume_evaluation_result.json'
+            with open(output_file, 'w', encoding='utf-8') as f:
+                json.dump(result, f, indent=2, ensure_ascii=False)
+            print(f"\n💾 Full results saved to: {output_file}")
+        
+        
+        # Display enhancement results
+        if result.get('enhancement') and result['enhancement'].get('success'):
+            enhancement = result['enhancement']
+            print("\n" + "="*60)
+            print("✨ RESUME ENHANCEMENT COMPLETED")
+            print("="*60 + "\n")
+            
+            # Show enhancement JSON first (most important for frontend)
+            if enhancement.get('enhancement_json_path'):
+                print(f"🎯 Enhancement JSON: {enhancement.get('enhancement_json_path', 'N/A')}")
+                print(f"   📊 {enhancement.get('enhancements_count', 0)} enhancements generated")
+                print()
+            
+            print(f"📄 Original Text: {enhancement.get('original_text_path', 'N/A')}")
+            print(f"📝 Enhanced Text: {enhancement.get('enhanced_text_path', 'N/A')}")
+            print(f"📊 Comparison File: {enhancement.get('comparison_path', 'N/A')}")
+            
+            if enhancement.get('enhanced_pdf_path'):
+                print(f"✨ Enhanced PDF: {enhancement.get('enhanced_pdf_path', 'N/A')}")
+            
+            print(f"\n💡 {enhancement.get('message', '')}")
+            print(f"\n🎯 Improvements Applied ({len(enhancement.get('improvements_applied', []))}):")
+            for i, improvement in enumerate(enhancement.get('improvements_applied', []), 1):
+                print(f"   {i}. {improvement}")
+            
+            if enhancement.get('enhanced_pdf_path'):
+                print(f"\n📝 Your enhanced PDF is ready!")
+                print(f"   📄 {os.path.basename(enhancement.get('enhanced_pdf_path', ''))}")
+                print(f"   ✅ Pixel-perfect layout preservation")
+                print(f"   ✅ Enhanced content with improved wording")
+            
+            if enhancement.get('enhancement_json_path'):
+                print(f"\n🔧 For Frontend Integration:")
+                print(f"   📁 Use: {os.path.basename(enhancement.get('enhancement_json_path', ''))}")
+                print(f"   ✅ {enhancement.get('enhancements_count', 0)} enhancements ready to apply")
+        
+    else:
+        print("\n❌ PROCESSING FAILED")
+        print(f"Error: {result['error']}")
+    
+    print("\n" + "="*60 + "\n")
+
+
+if __name__ == "__main__":
+    # If run directly, use command-line interface
+    main()

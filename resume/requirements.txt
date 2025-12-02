@@ -1,0 +1,30 @@
+# Backend ATS Resume Analyzer - Minimal Dependencies
+# NO UI, NO DATABASE
+
+# Core AI
+google-generativeai>=0.3.0
+
+# Environment variables
+python-dotenv>=1.0.0
+
+# PDF text extraction
+PyPDF2>=3.0.0
+
+# OCR dependencies (optional - for image-based PDFs)
+pdf2image>=1.16.0
+paddleocr>=2.7.0
+
+# Deep learning (for OCR)
+torch>=2.0.0
+torchvision>=0.15.0
+
+# Image processing
+opencv-python>=4.8.0
+numpy>=1.24.0
+Pillow>=10.0.0
+
+# PDF generation
+reportlab>=4.0.0
+
+# PDF editing (direct modification)
+PyMuPDF>=1.23.0

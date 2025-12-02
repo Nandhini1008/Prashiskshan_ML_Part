@@ -1,0 +1,14 @@
+# Google Gemini API Keys Configuration
+# Get your API keys from: https://makersuite.google.com/app/apikey
+
+# Option 1: Use single API key for all analyzers (simplest)
+GOOGLE_API_KEY=your_google_gemini_api_key_here
+
+# Option 2: Use separate API keys for better rate limiting (recommended for production)
+# AI Semantic Analyzer (strict pedagogical mode)
+AI_GEMINI_API_KEY=your_ai_analyzer_api_key_here
+
+# Rubric Analyzer (human reviewer simulation)
+RUBRIC_GEMINI_API_KEY=your_rubric_analyzer_api_key_here
+
+# Note: If separate keys are not provided, both analyzers will use GOOGLE_API_KEY as fallback

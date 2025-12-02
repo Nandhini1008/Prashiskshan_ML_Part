@@ -1,0 +1,75 @@
+version: "3.8"
+
+services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: qdrant_vectordb
+    ports:
+      - "6333:6333" # HTTP API
+      - "6334:6334" # gRPC API (optional, for better performance)
+    volumes:
+      - qdrant_storage:/qdrant/storage
+    environment:
+      # Allow connections from any host (for team access)
+      - QDRANT__SERVICE__HTTP_PORT=6333
+      - QDRANT__SERVICE__GRPC_PORT=6334
+    restart: unless-stopped
+    networks:
+      - qdrant_network
+      - app_network
+
+  chatbot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: chatbot_service
+    ports:
+      - "5001:5001"
+    environment:
+      # API Keys (set these in .env file or override here)
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      # Qdrant Configuration
+      - QDRANT_URL=http://qdrant:6333
+      - QDRANT_API_KEY=${QDRANT_API_KEY:-}
+      # Redis Configuration (connect to external Redis - set REDIS_HOST in .env)
+      # If Redis is on host machine, use: host.docker.internal (Mac/Windows) or host IP (Linux)
+      - REDIS_HOST=${REDIS_HOST:-host.docker.internal}
+      - REDIS_PORT=${REDIS_PORT:-6379}
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+      # Service Configuration
+      - CHATBOT_SERVICE_PORT=5001
+      - CHATBOT_SERVICE_HOST=0.0.0.0
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - qdrant
+    restart: unless-stopped
+    networks:
+      - qdrant_network
+      - app_network
+    volumes:
+      # Mount data directory if you want to persist/update data
+      - ./data:/app/data:ro
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://localhost:5001/health')",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  qdrant_storage:
+    driver: local
+
+networks:
+  qdrant_network:
+    driver: bridge
+  app_network:
+    driver: bridge
+    external: false

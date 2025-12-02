@@ -1,0 +1,38 @@
+AMAANUDEEN S
+Seeking an entry-level Data Scientist or AI Analyst role to leverage proven expertise in Python, Machine Learning, and Power BI for optimizing business processes and driving data-driven decision-making. Eager to apply skills in ML forecasting and AI-powered OCR, building on experience reducing shortages by 25% and manual data entry by 70%, to deliver actionable insights.Chennai, Tamil Nadu | amaan.s.udeen@gmail.com | LinkedIn: Amaan Udeen
+CAREER OBJECTIVE
+SKILLS
+Programming & Analytics: Python (Pandas, NumPy, Scikit-learn, NLTK, Statsmodels), C, SQL (MySQL)
+AI & Machine Learning: Scikit-learn, OpenCV, NLTK
+Data Visualization & Reporting: Power BI, Matplotlib, Seaborn
+Tools & Platforms: GitHub (Version Control), Google Cloud Vision API, Visual Studio Code
+Soft Skills: Leadership, Problem-Solving, Communication, Team Management, Analytical Thinking
+Languages: English (Fluent), Tamil (Native), Hindi (Intermediate)
+PROJECTS 
+Drug Inventory & Supply Chain Forecasting
+Engineered an ML-driven demand forecasting system, accurately predicting medicine stock levels and reducing both shortages and overstock by 25% for optimized inventory management.
+Successfully implemented and evaluated ARIMA, SARIMA, and XGBoost models to conduct robust trend analysis and generate precise demand forecasts.
+Designed and deployed interactive Power BI dashboards, enabling stakeholders to visualize critical demand trends and monitor model accuracy for informed decision-making.
+Tools: Python (Pandas, Scikit-learn, Statsmodels), Power BI
+AI-Powered OCR for Documents
+Developed and deployed an automated document processing pipeline that efficiently extracts and organizes critical text from invoices, reducing manual data entry by 70% and streamlining operational workflows.
+Seamlessly integrated Google Cloud Vision API with OpenCV to perform optical character recognition (OCR) and advanced image preprocessing.
+Applied natural language processing (NLP) techniques, specifically NLTK, for effective text cleaning and accurate key-entity extraction.
+Architected a structured output format, ensuring seamless compatibility with various business reporting tools for enhanced data utilization.
+Tools: Python (NLTK, Pandas, NumPy), Google Cloud Vision API, OpenCV, Power BI
+     EDUCATION
+B.E. Electronics and Communication Engineering | Rajalakshmi Engineering College | 2022 - Present
+CGPA: 8.41
+Higher Secondary Education (Biology and Mathematics) | Annai Veilankanni Matric Higher Sec School, Pammal | March 2022
+Secondary Education | Annai Veilankanni Matric Higher Sec School, Pammal | March 2020
+62%92%
+CERTIFICATIONS
+ACHIEVEMENTS AND LEADERSHIP
+Hackathon Leader & Presenter – Led teams of 4 or 6 in multiple hackathons, presented solutions to
+panels, and won recognition.
+SIH Internal Hackathon Winner – Ranked Top 25 out of 500 competing teams.
+Hack4Purpose – Achieved Finalist status (Top 100 out of 8500 teams).
+Hack Hustle – Secured Top 3 placement out of 30 teams (Hackathon conducted by SEC Chennai).
+Hackmegaddon – Ranked Top 6 out of 50 teams (Hackathon conducted by REC Chennai).Java Tutorial for Complete Beginners : Udemy
+Machine Learning & Deep Learning: An Introductory Course: Udemy 
+The Complete Python Bootcamp : Udemy

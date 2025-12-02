@@ -1,0 +1,59 @@
+    def _generate_rubric_improvements(
+        self,
+        rubric_result: Dict[str, Any]
+    ) -> Dict[str, List[Dict[str, str]]]:
+        """Generate improvements based on rubric analysis."""
+        improvements = {
+            "keyword_and_skills": [],
+            "content_and_bullets": [],
+            "projects_and_experience": [],
+            "structure_and_formatting": [],
+            "ats_compatibility": []
+        }
+        
+        # Check if rubric analysis was successful
+        if rubric_result.get('error') or rubric_result.get('score', 0) == 0:
+            return improvements
+        
+        # Extract rubric issues
+        rubric_issues = rubric_result.get('rubric_issues', [])
+        
+        for issue_obj in rubric_issues:
+            issue_text = issue_obj.get('issue', '')
+            how_to_fix = issue_obj.get('how_to_fix', '')
+            why_fails = issue_obj.get('why_it_fails_human_review', '')
+            example_rewrite = issue_obj.get('example_rewrite', '')
+            
+            # Categorize based on issue content
+            issue_lower = issue_text.lower()
+            
+            recommended_fix = how_to_fix
+            if example_rewrite:
+                recommended_fix += f" | Example: {example_rewrite}"
+            
+            if any(keyword in issue_lower for keyword in ['skill', 'keyword', 'proof', 'claim']):
+                improvements['keyword_and_skills'].append({
+                    'issue': issue_text,
+                    'recommended_fix': recommended_fix,
+                    'reason': f"Human Reviewer: {why_fails}"
+                })
+            elif any(keyword in issue_lower for keyword in ['bullet', 'verb', 'ownership', 'depth']):
+                improvements['content_and_bullets'].append({
+                    'issue': issue_text,
+                    'recommended_fix': recommended_fix,
+                    'reason': f"Human Reviewer: {why_fails}"
+                })
+            elif any(keyword in issue_lower for keyword in ['project', 'experience', 'difficulty']):
+                improvements['projects_and_experience'].append({
+                    'issue': issue_text,
+                    'recommended_fix': recommended_fix,
+                    'reason': f"Human Reviewer: {why_fails}"
+                })
+            else:
+                improvements['ats_compatibility'].append({
+                    'issue': issue_text,
+                    'recommended_fix': recommended_fix,
+                    'reason': f"Human Reviewer: {why_fails}"
+                })
+        
+        return improvements

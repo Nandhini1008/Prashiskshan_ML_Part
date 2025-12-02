@@ -1,0 +1,223 @@
+================================================================================
+RESUME ENHANCEMENTS
+================================================================================
+
+
+1. Standardized formatting for location and LinkedIn profile for improved professionalism and readability.
+   ORIGINAL: Chennai,Tamil Nadu   |  amaan.s.udeen@gmail.com | LinkedIn - Amaan Udeen
+   ENHANCED: Chennai, Tamil Nadu | amaan.s.udeen@gmail.com | LinkedIn: Amaan Udeen
+
+2. Made the objective specific to a desired role, highlighted key skills directly linked to project achievements, and articulated the value proposition, addressing ATS feedback regarding a generic objective.
+   ORIGINAL: Aspiring Data & AI professional skilled in Python, Machine Learning, and Power BI with a strong foundation
+in analytics, visualization, and automation. Passionate about transforming raw data into actionable insights
+through AI models and interactive dashboards to support data-driven decision-making.
+   ENHANCED: Seeking an entry-level Data Scientist or AI Analyst role to leverage proven expertise in Python, Machine Learning, and Power BI for optimizing business processes and driving data-driven decision-making. Eager to apply skills in ML forecasting and AI-powered OCR, building on experience reducing shortages by 25% and manual data entry by 70%, to deliver actionable insights.
+
+3. Removed unsupported skill (Java) and specified Python libraries directly used in projects, providing context and evidence for claims, which improves ATS compatibility and trustworthiness.
+   ORIGINAL: Programming & Analytics: Python, Java, C, MySQL
+   ENHANCED: Programming & Analytics: Python (Pandas, NumPy, Scikit-learn, NLTK, Statsmodels), C, SQL (MySQL)
+
+4. Removed unsupported skills (TensorFlow, Hugging Face) and relocated Pandas/NumPy to Programming & Analytics for clarity, aligning skills with explicit project usage.
+   ORIGINAL: AI & Machine Learning: Scikit-learn, TensorFlow, Pandas, NumPy, OpenCV, Hugging Face
+   ENHANCED: AI & Machine Learning: Scikit-learn, OpenCV, NLTK
+
+5. Removed Google Colab (a platform, not a visualization tool) to focus on core visualization skills demonstrated in projects.
+   ORIGINAL: Data Visualization & Reporting: Power BI, Matplotlib, Seaborn, Google Colab
+   ENHANCED: Data Visualization & Reporting: Power BI, Matplotlib, Seaborn
+
+6. Added context for GitHub to specify its application and improve clarity.
+   ORIGINAL: Tools & Platforms: GitHub, Visual Studio Code, Google Cloud Vision API
+   ENHANCED: Tools & Platforms: GitHub (Version Control), Google Cloud Vision API, Visual Studio Code
+
+7. Removed generic soft skills list as recommended by ATS; these skills are more impactful when demonstrated through specific achievements and project descriptions.
+   ORIGINAL: Soft Skills: Leadership, Problem-Solving, Communication, Team Management, Analytical Thinking
+   ENHANCED: 
+
+8. Used a stronger action verb ('Engineered'), added 'accurately,' and clarified the business impact ('for optimized inventory management') without inventing new metrics.
+   ORIGINAL: Developed an ML-driven demand forecasting system to predict medicine stock levels, reducing shortages
+and overstock by 25%.
+   ENHANCED: Engineered an ML-driven demand forecasting system, accurately predicting medicine stock levels and reducing both shortages and overstock by 25% for optimized inventory management.
+
+9. Used stronger action verbs ('Successfully implemented and evaluated,' 'generate precise') and added 'robust' to enhance the description of the analysis.
+   ORIGINAL: Implemented ARIMA, SARIMA, and XGBoost models for trend analysis and forecasting.
+   ENHANCED: Successfully implemented and evaluated ARIMA, SARIMA, and XGBoost models to conduct robust trend analysis and generate precise demand forecasts.
+
+10. Added 'deployed' and emphasized user enablement ('enabling stakeholders... for informed decision-making') to highlight broader impact and value.
+   ORIGINAL: Designed interactive Power BI dashboards to visualize demand trends and model accuracy.
+   ENHANCED: Designed and deployed interactive Power BI dashboards, enabling stakeholders to visualize critical demand trends and monitor model accuracy for informed decision-making.
+
+11. Grouped Python libraries for consistency with the revised 'Skills' section and improved readability.
+   ORIGINAL: Tools: Python, Pandas, Scikit-learn, Statsmodels, Power BI
+   ENHANCED: Tools: Python (Pandas, Scikit-learn, Statsmodels), Power BI
+
+12. Used stronger action verbs ('Developed and deployed'), added 'efficiently' and 'critical,' and emphasized business value ('streamlining operational workflows') without inventing new metrics.
+   ORIGINAL: Built an automated document processing pipeline to extract and organize text from invoices, reducing
+manual data entry by 70%.
+   ENHANCED: Developed and deployed an automated document processing pipeline that efficiently extracts and organizes critical text from invoices, reducing manual data entry by 70% and streamlining operational workflows.
+
+13. Added 'Seamlessly' and 'advanced image' for a stronger description of the integration and process.
+   ORIGINAL: Integrated Google Cloud Vision API with OpenCV for OCR and preprocessing.
+   ENHANCED: Seamlessly integrated Google Cloud Vision API with OpenCV to perform optical character recognition (OCR) and advanced image preprocessing.
+
+14. Clarified 'NLP techniques' and added 'effective' and 'accurate' to describe the quality of outcomes.
+   ORIGINAL: Used NLP techniques (NLTK) for text cleaning and key-entity extraction.
+   ENHANCED: Applied natural language processing (NLP) techniques, specifically NLTK, for effective text cleaning and accurate key-entity extraction.
+
+15. Used a stronger action verb ('Architected'), added 'seamless' and 'various,' and clarified the benefit ('for enhanced data utilization').
+   ORIGINAL: Designed a structured output format compatible with business reporting tools.
+   ENHANCED: Architected a structured output format, ensuring seamless compatibility with various business reporting tools for enhanced data utilization.
+
+16. Grouped Python libraries for consistency with the revised 'Skills' section and improved readability.
+   ORIGINAL: Tools: Python, Google Cloud Vision API, OpenCV, NLTK, Pandas, NumPy, Power BI, 
+   ENHANCED: Tools: Python (NLTK, Pandas, NumPy), Google Cloud Vision API, OpenCV, Power BI
+
+17. Standardized format, included the institution, and updated the date format to 'Present' for ongoing study, as per ATS recommendations for clarity.
+   ORIGINAL: B.E Electronics and Communication Engineering  2022-2026
+   ENHANCED: B.E. Electronics and Communication Engineering | Rajalakshmi Engineering College | 2022 - Present
+
+18. Improved formatting and clarity for academic performance within the education section.
+   ORIGINAL: Rajalakshmi Engineering College CGPA - 8.41 (present)
+   ENHANCED: CGPA: 8.41
+
+19. Standardized format, clarified the educational level, and included the institution for consistency and readability.
+   ORIGINAL: Higher Secondary Education - Biology and Mathematics Mar - 2022
+   ENHANCED: Higher Secondary Education (Biology and Mathematics) | Annai Veilankanni Matric Higher Sec School, Pammal | March 2022
+
+20. Separated the percentage for clearer presentation and consistency within the education section.
+   ORIGINAL: Annai Veilankanni Matric Higher Sec School, Pammal - 92%
+   ENHANCED: 92%
+
+21. Corrected formatting, clarified educational level, and included the institution for consistency and readability.
+   ORIGINAL: Mar - 2020Secondary Education 
+   ENHANCED: Secondary Education | Annai Veilankanni Matric Higher Sec School, Pammal | March 2020
+
+22. Separated the percentage for clearer presentation and consistency within the education section.
+   ORIGINAL: Annai Veilankanni Matric Higher Sec School, Pammal - 62%
+   ENHANCED: 62%
+
+23. Removed the section heading as the listed certifications were deemed to not add significant professional credibility per ATS evaluation, recommending their removal.
+   ORIGINAL: CERTIFICATIONS
+   ENHANCED: 
+
+24. Removed basic online course certification that does not add significant professional credibility as per ATS evaluation.
+   ORIGINAL: Java Tutorial for Complete Beginners : Udemy
+   ENHANCED: 
+
+25. Removed basic online course certification that does not add significant professional credibility as per ATS evaluation.
+   ORIGINAL: Machine Learning & Deep Learning: An Introductory Course: Udemy 
+   ENHANCED: 
+
+26. Removed basic online course certification that does not add significant professional credibility as per ATS evaluation.
+   ORIGINAL: The Complete Python Bootcamp : Udemy
+   ENHANCED: 
+
+27. Integrated relevant soft skills (leadership, problem-solving, communication) directly into the achievement description, providing context and evidence, as recommended by ATS.
+   ORIGINAL: Hackathon Leader & Presenter – Led teams of 4 or 6 in multiple hackathons, presented solutions to panels, and won recognition.
+   ENHANCED: Led diverse teams of 4-6 members in multiple hackathons, demonstrating strong leadership, problem-solving, and communication skills by presenting innovative solutions to judging panels and securing top placements.
+
+28. Improved wording for impact and clarity, using a stronger verb ('Ranked').
+   ORIGINAL: SIH Internal Hackathon Winner – Top 25 out of 500 teams.
+   ENHANCED: SIH Internal Hackathon Winner – Ranked Top 25 out of 500 competing teams.
+
+29. Improved wording for impact and clarity, using a stronger verb ('Achieved Finalist status').
+   ORIGINAL: Hack4Purpose – Top 100 out of 8500 teams(Finalist)
+   ENHANCED: Hack4Purpose – Achieved Finalist status (Top 100 out of 8500 teams).
+
+30. Used a stronger action verb ('Secured') and standardized formatting for improved professionalism.
+   ORIGINAL: Hack Hustle – Top 3 out of 30 teams (Hackathon conducted by SEC chennai)
+   ENHANCED: Hack Hustle – Secured Top 3 placement out of 30 teams (Hackathon conducted by SEC Chennai).
+
+31. Used a stronger action verb ('Ranked') and standardized formatting for improved professionalism.
+   ORIGINAL: Hackmegaddon – Top 6 out of 50 teams (Hackathon conducted by REC chennai)
+   ENHANCED: Hackmegaddon – Ranked Top 6 out of 50 teams (Hackathon conducted by REC Chennai).
+
+
+================================================================================
+ORIGINAL RESUME
+================================================================================
+
+AMAANUDEEN S
+Aspiring Data & AI professional skilled in Python, Machine Learning, and Power BI with a strong foundation
+in analytics, visualization, and automation. Passionate about transforming raw data into actionable insights
+through AI models and interactive dashboards to support data-driven decision-making.Chennai,Tamil Nadu   |  amaan.s.udeen@gmail.com | LinkedIn - Amaan Udeen
+CAREER OBJECTIVE
+SKILLS
+Programming & Analytics: Python, Java, C, MySQL
+AI & Machine Learning: Scikit-learn, TensorFlow, Pandas, NumPy, OpenCV, Hugging Face
+Data Visualization & Reporting: Power BI, Matplotlib, Seaborn, Google Colab
+Tools & Platforms: GitHub, Visual Studio Code, Google Cloud Vision API
+Soft Skills: Leadership, Problem-Solving, Communication, Team Management, Analytical Thinking
+Languages: English (Fluent), Tamil (Native), Hindi (Intermediate)
+PROJECTS 
+Drug Inventory & Supply Chain Forecasting
+Developed an ML-driven demand forecasting system to predict medicine stock levels, reducing shortages
+and overstock by 25%.
+Implemented ARIMA, SARIMA, and XGBoost models for trend analysis and forecasting.
+Designed interactive Power BI dashboards to visualize demand trends and model accuracy.
+Tools: Python, Pandas, Scikit-learn, Statsmodels, Power BI
+AI-Powered OCR for Documents
+Built an automated document processing pipeline to extract and organize text from invoices, reducing
+manual data entry by 70%.
+Integrated Google Cloud Vision API with OpenCV for OCR and preprocessing.
+Used NLP techniques (NLTK) for text cleaning and key-entity extraction.
+Designed a structured output format compatible with business reporting tools.
+Tools: Python, Google Cloud Vision API, OpenCV, NLTK, Pandas, NumPy, Power BI, 
+     EDUCATION
+B.E Electronics and Communication Engineering  2022-2026
+Rajalakshmi Engineering College CGPA - 8.41 (present)
+Higher Secondary Education - Biology and Mathematics Mar - 2022
+Mar - 2020Secondary Education 
+Annai Veilankanni Matric Higher Sec School, Pammal - 62%Annai Veilankanni Matric Higher Sec School, Pammal - 92%
+CERTIFICATIONS
+ACHIEVEMENTS AND LEADERSHIP
+Hackathon Leader & Presenter – Led teams of 4 or 6 in multiple hackathons, presented solutions to
+panels, and won recognition.
+SIH Internal Hackathon Winner – Top 25 out of 500 teams.
+Hack4Purpose – Top 100 out of 8500 teams(Finalist)
+Hack Hustle – Top 3 out of 30 teams (Hackathon conducted by SEC chennai)
+Hackmegaddon – Top 6 out of 50 teams (Hackathon conducted by REC chennai)Java Tutorial for Complete Beginners : Udemy
+Machine Learning & Deep Learning: An Introductory Course: Udemy 
+The Complete Python Bootcamp : Udemy
+
+================================================================================
+ENHANCED RESUME
+================================================================================
+
+AMAANUDEEN S
+Seeking an entry-level Data Scientist or AI Analyst role to leverage proven expertise in Python, Machine Learning, and Power BI for optimizing business processes and driving data-driven decision-making. Eager to apply skills in ML forecasting and AI-powered OCR, building on experience reducing shortages by 25% and manual data entry by 70%, to deliver actionable insights.Chennai, Tamil Nadu | amaan.s.udeen@gmail.com | LinkedIn: Amaan Udeen
+CAREER OBJECTIVE
+SKILLS
+Programming & Analytics: Python (Pandas, NumPy, Scikit-learn, NLTK, Statsmodels), C, SQL (MySQL)
+AI & Machine Learning: Scikit-learn, OpenCV, NLTK
+Data Visualization & Reporting: Power BI, Matplotlib, Seaborn
+Tools & Platforms: GitHub (Version Control), Google Cloud Vision API, Visual Studio Code
+Soft Skills: Leadership, Problem-Solving, Communication, Team Management, Analytical Thinking
+Languages: English (Fluent), Tamil (Native), Hindi (Intermediate)
+PROJECTS 
+Drug Inventory & Supply Chain Forecasting
+Engineered an ML-driven demand forecasting system, accurately predicting medicine stock levels and reducing both shortages and overstock by 25% for optimized inventory management.
+Successfully implemented and evaluated ARIMA, SARIMA, and XGBoost models to conduct robust trend analysis and generate precise demand forecasts.
+Designed and deployed interactive Power BI dashboards, enabling stakeholders to visualize critical demand trends and monitor model accuracy for informed decision-making.
+Tools: Python (Pandas, Scikit-learn, Statsmodels), Power BI
+AI-Powered OCR for Documents
+Developed and deployed an automated document processing pipeline that efficiently extracts and organizes critical text from invoices, reducing manual data entry by 70% and streamlining operational workflows.
+Seamlessly integrated Google Cloud Vision API with OpenCV to perform optical character recognition (OCR) and advanced image preprocessing.
+Applied natural language processing (NLP) techniques, specifically NLTK, for effective text cleaning and accurate key-entity extraction.
+Architected a structured output format, ensuring seamless compatibility with various business reporting tools for enhanced data utilization.
+Tools: Python (NLTK, Pandas, NumPy), Google Cloud Vision API, OpenCV, Power BI
+     EDUCATION
+B.E. Electronics and Communication Engineering | Rajalakshmi Engineering College | 2022 - Present
+CGPA: 8.41
+Higher Secondary Education (Biology and Mathematics) | Annai Veilankanni Matric Higher Sec School, Pammal | March 2022
+Secondary Education | Annai Veilankanni Matric Higher Sec School, Pammal | March 2020
+62%92%
+CERTIFICATIONS
+ACHIEVEMENTS AND LEADERSHIP
+Hackathon Leader & Presenter – Led teams of 4 or 6 in multiple hackathons, presented solutions to
+panels, and won recognition.
+SIH Internal Hackathon Winner – Ranked Top 25 out of 500 competing teams.
+Hack4Purpose – Achieved Finalist status (Top 100 out of 8500 teams).
+Hack Hustle – Secured Top 3 placement out of 30 teams (Hackathon conducted by SEC Chennai).
+Hackmegaddon – Ranked Top 6 out of 50 teams (Hackathon conducted by REC Chennai).Java Tutorial for Complete Beginners : Udemy
+Machine Learning & Deep Learning: An Introductory Course: Udemy 
+The Complete Python Bootcamp : Udemy
