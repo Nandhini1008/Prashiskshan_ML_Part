@@ -13,7 +13,6 @@ from graph.nodes import GraphNodes
 from graph.memory import ConversationMemory
 from retrieval.retriever import Retriever
 from retrieval.score_threshold import ScoreThreshold
-from llm.llama_llm import LlamaLLM
 from llm.gemini_llm import GeminiLLM
 from routing.route_rules import RouteRules
 
@@ -23,7 +22,6 @@ class ChatbotGraph:
     def __init__(self,
                  retriever: Retriever,
                  score_threshold: ScoreThreshold,
-                 llama_llm: LlamaLLM,
                  gemini_llm: GeminiLLM,
                  route_rules: RouteRules,
                  memory: ConversationMemory):
@@ -33,7 +31,6 @@ class ChatbotGraph:
         Args:
             retriever: Document retriever
             score_threshold: Score validator
-            llama_llm: LLaMA LLM client
             gemini_llm: Gemini LLM client
             route_rules: Routing rules
             memory: Conversation memory
@@ -44,7 +41,6 @@ class ChatbotGraph:
         self.nodes = GraphNodes(
             retriever=retriever,
             score_threshold=score_threshold,
-            llama_llm=llama_llm,
             gemini_llm=gemini_llm,
             route_rules=route_rules,
             memory=memory
@@ -69,7 +65,6 @@ class ChatbotGraph:
         workflow.add_node("validate", self.nodes.validate_node)
         workflow.add_node("rag_answer", self.nodes.rag_answer_node)
         workflow.add_node("external_knowledge", self.nodes.external_knowledge_node)
-        workflow.add_node("refine", self.nodes.refinement_node)
         workflow.add_node("memory", self.nodes.memory_node)
         
         # Define routing logic
@@ -97,9 +92,8 @@ class ChatbotGraph:
         workflow.add_edge("validate", "rag_answer")
         workflow.add_edge("rag_answer", "memory")
         
-        # External pipeline edges
-        workflow.add_edge("external_knowledge", "refine")
-        workflow.add_edge("refine", "memory")
+        # External pipeline edges - directly to memory (no refinement)
+        workflow.add_edge("external_knowledge", "memory")
         
         # Memory node leads to END
         workflow.add_edge("memory", END)

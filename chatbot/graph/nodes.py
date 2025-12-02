@@ -7,7 +7,6 @@ from typing import Dict, Any
 from graph.state import ChatbotState
 from retrieval.retriever import Retriever
 from retrieval.score_threshold import ScoreThreshold
-from llm.llama_llm import LlamaLLM
 from llm.gemini_llm import GeminiLLM
 from routing.route_rules import RouteRules
 from graph.memory import ConversationMemory
@@ -19,7 +18,6 @@ class GraphNodes:
     def __init__(self,
                  retriever: Retriever,
                  score_threshold: ScoreThreshold,
-                 llama_llm: LlamaLLM,
                  gemini_llm: GeminiLLM,
                  route_rules: RouteRules,
                  memory: ConversationMemory):
@@ -29,14 +27,12 @@ class GraphNodes:
         Args:
             retriever: Document retriever
             score_threshold: Score validator
-            llama_llm: LLaMA LLM client
             gemini_llm: Gemini LLM client
             route_rules: Routing rules
             memory: Conversation memory
         """
         self.retriever = retriever
         self.score_threshold = score_threshold
-        self.llama_llm = llama_llm
         self.gemini_llm = gemini_llm
         self.route_rules = route_rules
         self.memory = memory
@@ -118,7 +114,7 @@ class GraphNodes:
     
     def rag_answer_node(self, state: ChatbotState) -> ChatbotState:
         """
-        Node: Generate answer using RAG.
+        Node: Generate answer using RAG with Gemini.
         
         Args:
             state: Current state
@@ -137,8 +133,8 @@ class GraphNodes:
         # Format context
         context = self.retriever.format_retrieved_context(filtered_docs)
         
-        # Generate answer with conversation history
-        answer = self.llama_llm.generate_rag_answer(
+        # Generate answer with Gemini using conversation history
+        answer = self.gemini_llm.generate_rag_answer(
             context=context,
             question=query,
             conversation_history=formatted_history
@@ -151,12 +147,13 @@ class GraphNodes:
         """
         Node: Generate response using Gemini (external path).
         Auto-ingests the Q&A pair into Qdrant for future retrieval.
+        Sets the answer directly (no refinement needed).
         
         Args:
             state: Current state
             
         Returns:
-            Updated state with Gemini response
+            Updated state with Gemini response as final answer
         """
         query = state.get("query", "")
         formatted_history = state.get("formatted_history", "")
@@ -166,7 +163,9 @@ class GraphNodes:
             question=query,
             conversation_history=formatted_history
         )
-        state["gemini_response"] = gemini_response
+        
+        # Set as final answer directly
+        state["answer"] = gemini_response
         
         # Auto-ingest Q&A pair into Qdrant for future retrieval
         try:
@@ -182,30 +181,6 @@ class GraphNodes:
         except Exception as e:
             import sys
             print(f"Error during auto-ingestion: {e}", file=sys.stderr)
-        
-        return state
-    
-    def refinement_node(self, state: ChatbotState) -> ChatbotState:
-        """
-        Node: Refine Gemini response using LLaMA.
-        
-        Args:
-            state: Current state
-            
-        Returns:
-            Updated state with refined answer
-        """
-        query = state.get("query", "")
-        gemini_response = state.get("gemini_response", "")
-        formatted_history = state.get("formatted_history", "")
-        
-        # Refine response with conversation history
-        refined_answer = self.llama_llm.refine_response(
-            original_response=gemini_response,
-            question=query,
-            conversation_history=formatted_history
-        )
-        state["answer"] = refined_answer
         
         return state
     

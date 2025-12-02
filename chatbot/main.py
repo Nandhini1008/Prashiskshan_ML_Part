@@ -7,7 +7,6 @@ import os
 from config.settings import get_config, validate_config
 from retrieval.retriever import Retriever
 from retrieval.score_threshold import ScoreThreshold
-from llm.llama_llm import LlamaLLM
 from llm.gemini_llm import GeminiLLM
 from routing.route_rules import RouteRules
 from graph.memory import ConversationMemory
@@ -46,14 +45,7 @@ class RAGChatbot:
             threshold=self.config["similarity_threshold"]
         )
         
-        # Initialize LLMs
-        self.llama_llm = LlamaLLM(
-            api_key=self.config["together_api_key"],
-            model=self.config["llama_model"],
-            temperature=self.config["llama_temperature"],
-            max_tokens=self.config["llama_max_tokens"]
-        )
-        
+        # Initialize Gemini LLM
         self.gemini_llm = GeminiLLM(
             api_key=self.config["gemini_api_key"],
             model=self.config["gemini_model"],
@@ -73,7 +65,6 @@ class RAGChatbot:
         self.graph = ChatbotGraph(
             retriever=self.retriever,
             score_threshold=self.score_threshold,
-            llama_llm=self.llama_llm,
             gemini_llm=self.gemini_llm,
             route_rules=self.route_rules,
             memory=self.memory

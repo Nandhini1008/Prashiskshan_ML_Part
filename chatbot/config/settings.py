@@ -13,18 +13,14 @@ env_path = Path(__file__).parent.parent / '.env'
 load_dotenv(dotenv_path=env_path)
 
 # API Configuration
-TOGETHER_API_KEY = os.getenv("OPENROUTER_API_KEY", "")  # Using OpenRouter instead
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 
 # LLM Configuration
-LLAMA_MODEL = "gemini-2.5-flash"
-GEMINI_MODEL = "gemini-2.5-flash"
+GEMINI_MODEL = "gemini-2.0-flash-exp"
 
 # LLM Parameters
-LLAMA_TEMPERATURE = 0.3
-LLAMA_MAX_TOKENS = 4096  # Increased from 1024
 GEMINI_TEMPERATURE = 0.4
-GEMINI_MAX_TOKENS = 8192  # Increased from 2048
+GEMINI_MAX_TOKENS = 8192
 
 # Vector Store Configuration
 QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
@@ -75,12 +71,8 @@ def get_config() -> Dict[str, Any]:
         Dict containing all configuration parameters
     """
     return {
-        "together_api_key": TOGETHER_API_KEY,
         "gemini_api_key": GEMINI_API_KEY,
-        "llama_model": LLAMA_MODEL,
         "gemini_model": GEMINI_MODEL,
-        "llama_temperature": LLAMA_TEMPERATURE,
-        "llama_max_tokens": LLAMA_MAX_TOKENS,
         "gemini_temperature": GEMINI_TEMPERATURE,
         "gemini_max_tokens": GEMINI_MAX_TOKENS,
         "qdrant_url": QDRANT_URL,
@@ -103,9 +95,6 @@ def validate_config() -> bool:
     Returns:
         True if configuration is valid, False otherwise
     """
-    if not TOGETHER_API_KEY:
-        print("Warning: OPENROUTER_API_KEY not set")
-        return False
     if not GEMINI_API_KEY:
         print("Warning: GEMINI_API_KEY not set")
         return False

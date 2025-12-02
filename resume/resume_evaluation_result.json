@@ -1,115 +1,136 @@
 {
   "success": true,
-  "resume_text": "Nithisshkrishna K S\n153 Affinity Lane Apartment B-S, Buffalo, New York 14215\n+1 716-910-9712 nithissh683@gmail.com linkedin.com/in/nithisshkrishna/ github.com/NithisshKrishna\nProfessional Summary\nAnalytical and detail-oriented Data Science graduate student with hands-on experience in data analysis, predictive\nmodeling, and data visualization. Skilled in SQL, Python, R, and advanced data analytics tools, with a strong\nfoundation in machine learning, deep learning, NLP, and statistical modeling. Experienced in building and\ndeploying scalable applications, integrating relational databases, and presenting insights through interactive\ndashboards. Seeking a data analyst or data scientist role in a growth-focused organization to apply analytical\nexpertise and drive business impact\nEducation\nState University of New York at Buffalo August 2024 – Present\nMaster of Science in Data Science — CGPA: 3.75 Buffalo, New York\nRajalakshmi Engineering College August 2020 – May 2024\nBachelor of Technology in Artificial Intelligence and Machine Learning — CGPA: 3.75 Chennai, Tamil Nadu\nExperience\nInternational Software Solutions Inc June 2025 – August 2025\nData Analysis and Web development Intern Greenbelt, Maryland\n–Designed and deployed a school management web application using Django, implementing REST APIs, ORM-based\nmodels, and role-based user authentication.\n–Enhanced system scalability by integrating relational databases, optimizing queries, and ensuring seamless\nbackend–frontend communication.\n–Performed feature engineering and exploratory data analysis (EDA) on large datasets using Python (Pandas, NumPy,\nSeaborn, Plotly) to uncover actionable insights.\n–Built and optimized machine learning models (classification/regression) with Scikit-learn/XGBoost, applying\ncross-validation, hyperparameter tuning, and performance monitoring.\nVlog Innovations January 2023 – March 2023\nMachine Learning Intern Chennai, Tamil Nadu\n–Gained hands-on experience in developing and optimizing end-to-end machine learning pipelines.\n–Collaborated with a team to integrate machine learning models into real-world projects, enhancing model performance.\n–Contributed to data analysis, model deployment, and project execution using agile methodologies to improve efficiency.\nProjects\nOrdinal (Mental Health Awareness WebApp) |Python, HTML, JavaScript May 2023\n–Designed and developed a prototype mental health web application with 5+ core features , including articles, audio,\nvideos, quizzes, and journaling.\n–Built and integrated 3 interactive modules (quizzes, journaling, guided audio) to simulate trauma recovery support\nand boost engagement in testing scenarios.\n–Conducted 10+ rounds of testing with sample data and scenarios, achieving a 100% pass rate on all core\nfunctionality.\nCustomer Attrition Prediction |Python, PySpark, Big Data May 2024\n–Built a big data–driven web application to analyze 1M+ telecom records , enabling exploration of customer behavior\nand attrition patterns.\n–Integrated Apache Spark for large-scale data processing and implemented ensemble voting classifiers, boosting\nprediction accuracy by 20% .\n–Delivered forecasting insights through visualization and reporting, identifying 3 key drivers of customer churn to\nguide retention strategies.\nSchool Management System |Django, PostgreSQL, Data Analytics, Plotly June 2025\n–Designed and deployed a Django-based school management system with role-based authentication for 4+ user types\n(students, teachers, parents, administrators).\n–Developed a PostgreSQL relational schema with 6+ interconnected entities (Students, Teachers, Courses,\nEnrollments, Grades, Attendance) ensuring data integrity via constraints and foreign keys.\n–Built 5+ interactive dashboards using Plotly, Seaborn, and Matplotlib to track academic performance, attendance\ntrends, and student outcomes.\n–Automated notifications for grades, attendance alerts, and event updates, and implemented predictive analytics to\nforecast student performance with 85% accuracy in testing .\nExtracurricular Activities\n–Volunteer at IAD DAYS 2025, Institute for Artificial Intelligence and Data Science (IAD), University at\nBuffalo\n∗Supported the organization and execution of the Artificial Intelligence and Data Science Symposium, a prominent\nevent drawing national scholars in AI, Machine Learning, and High Performance Computing.\n∗Managed logistics and technology setups for the workshop, ensuring tools and environments were prepared for\nhands-on learning experiences.\n– National and State Level Rifle Shooter (2017 – 2020)\n∗Represented Tamil Nadu as a member of the Sports Development Authority of Tamil Nadu (SDAT).\n∗Competed at the national level, demonstrating precision, focus, and dedication in rifle shooting.\n∗Secured Silver Medal at State Championship (2019), demonstrating focus, consistency, and ability to perform under\nhigh-pressure environments — skills I bring to data-driven problem-solving..\nPublications\nClustering Comparison of Customer Attrition Using Machine Learning Algorithms\nInternational Journal of Innovative Science and Research Technology, Volume 9, Issue 4, April 2024\nCertifications\n–Tata Data Visualization: Empowering Business with Effective Insights Job Simulation on Forage\n(February 2025)\n–Completed a simulation involving creating data visualizations using Tableau, preparing questions for client meetings, and\ndeveloping visuals to support decision-making.\nTechnical Skills\n•Languages & Frameworks: Python, R, SQL, Matlab, Django\n•Tools & Platforms: Tableau, Git, Docker, Excel, PostgreSQL\n•Data Science & AI Skills: Statistics, Data Visualization, Deep Learning, Natural Language Processing\n(NLP), Computer Vision",
-  "text_length": 5686,
+  "resume_text": "NANDHINI PRAKASH \nChennai | 6380025060 | Email ID | GitHub Link | LinkedIN Link \nAI and backend developer specializing in computer vision, LLM-based intelligent\nagents, and end-to-end automation systems. Demonstrated leadership and a strong\ntrack record of delivering deployable, real-world AI solutions with measurable\nimpact.\nCLUBS & INTERNSHIPS \nTECHNICAL ASSOCIATE\nBuilt certificate generator & text recognition tools.\nDEVS CLUB REC\nMAR 2025\nPRESENT\nTECHNICAL ASSOCIATE\nPOSTER DESIGNER\nWorked on technical implementations & poster designs.\nOCT 2024 \nPRESENT\nTECH BUDDY SPACE\nINTERN \nPerformed EDA & FastAPI development.\nGained experience in teamwork & professional\ncommunication.\nJUN 2025  \nJUL 2025\nBICS Global Ltd\nPROJECTS\n1. Certificate Automation System\nAutomated certificate generation using placeholder mapping\nand template saving. \nTech Stack: React, FastAPI, REST API, Vercel, Render\n2. Emotion & Face Detection System\nReal-time face and emotion recognition via webcam using\nCV models.\nTech Stack: OpenCV, RetinaFace, YOLOv8, TensorFlow,\nFastAPI\n3. Validly – Competitor Analysis Agent\nAI agent to crawl competitors, extract insights, and provide\nLLM-based analysis. \nTech Stack: Meta LLM, Selenium, BeautifulSoup,\nCloudscraper\n4. AI Assistant for Visually Impaired Users\nVision-based assistant that detects objects, traffic lights, and\ntext, converting to speech output. \nTech Stack: OpenCV, YOLOv8, CRAFT, PaddleOCR, Meta\nLLM, pyttsx3\nEDUCATION \n12\n (HSC): 92.8 % \n2022 - 2023 \nMAHARISHI VIDYA MANDIR, MANGADU \nth\n10\n (SSC): 91.8 % \nMAHARISHI VIDYA MANDIR, MANGADU \nth\n2020 - 2021\nPresent \nCGPA: \n8.61\nRAJALASHMI ENGINEERING COLLEGELEADERSHIP AND ENVOLVEMENT\nStrong leadership & team collaboration in multiple technical clubs\nEffective communicator with project execution ownership\nACHIEVEMENTS\nSelected for Smart India Hackathon (SIH) internal rounds in 2024 &\n2025\nRunner-up in Kaggle competition\nFinalist at Spectrum Hackathon, VIT Chennai\nSKILLS\nProgramming & Backend Development: FastAPI, REST APIs, Python, React\nAI & Machine Learning: LLMs (Meta), TensorFlow, YOLOv8, OpenCV, Computer Vision\nTools & Platforms: Selenium, BeautifulSoup, Cloudscraper, Vercel, Render\nSoft Skills: Leadership, Team Management, Communication, Punctuality\nLanguages: Tamil, English",
+  "text_length": 2279,
   "evaluation": {
-    "standard_ats_score": 94,
-    "ai_ats_score": 51,
-    "rubric_ats_score": 15,
-    "final_ats_score": 53,
+    "standard_ats_score": 69,
+    "ai_ats_score": 56,
+    "rubric_ats_score": 47,
+    "final_ats_score": 57,
     "shortlist_decision": "No",
     "analysis_summary": {
       "strengths": [
         "Clean, ATS-parsable format",
         "All essential sections present",
-        "Complete contact information",
-        "Good keyword density and relevance",
-        "Well-structured bullet points with outcomes",
         "Proper chronological organization",
-        "Strong academic background with good GPAs in relevant fields (Data Science, AI/ML).",
-        "Excellent project section demonstrating hands-on experience with diverse tools and clear, quantifiable impacts (e.g., 20% accuracy boost, 100% pass rate).",
-        "Comprehensive technical skills list, with strong evidence for most core data science and web development technologies.",
-        "Clear career objective and professional summary that aligns with target roles."
+        "Excellent technical projects demonstrating deep expertise in AI, computer vision, and backend development.",
+        "Comprehensive skill section with strong supporting evidence from projects.",
+        "Impressive achievements showcasing competitive success and recognition.",
+        "Clear and concise professional summary highlighting key specializations and impact.",
+        "Good academic record.",
+        "Demonstrated proficiency in computer vision and LLM integration via multiple projects.",
+        "Clear ownership of technical projects, leveraging diverse tech stacks (e.g., FastAPI, React, OpenCV, YOLOv8, Meta LLM)."
       ],
       "weaknesses": [
-        "Learning Focus: Nithisshkrishna, your resume showcases a strong foundation in data science and impressive projects with clear impacts. To make your resume highly effective, prioritize updating all dates to reflect actual past or current engagements. Additionally, strengthen your internship descriptions by using powerful action verbs and quantifying achievements, and ensure every skill listed has clear supporting evidence to demonstrate your capabilities to potential employers.",
-        "Critical timeline inconsistencies where several experiences, projects, and certifications are listed with future dates.",
-        "Some experience bullet points lack specific action verbs and quantifiable outcomes, particularly in the earlier internship.",
-        "A few listed technical skills lack supporting evidence in the experience or projects sections.",
+        "Incomplete contact information",
+        "Insufficient relevant keywords and skills",
+        "Learning Focus: Nandhini, your resume showcases impressive technical projects and a strong skill set in AI and backend development, clearly demonstrated through your project work and achievements. To make your excellent experience even more impactful, focus on two key areas: first, ensure all dates, especially in your 'Clubs & Internships' section, are accurate and reflect current or past engagements to maintain credibility. Second, enhance your internship and club activity descriptions by using strong action verbs and quantifying the impact or results of your contributions whenever possible to highlight your value.",
+        "Critical timeline inconsistencies in 'Clubs & Internships' section with future dates.",
+        "Lack of quantified impact and specific outcomes in internship and club activity descriptions.",
+        "Some vague action verbs and generic phrasing in experience bullets.",
+        "Placeholder contact information needs to be updated.",
+        "Minor typo in a section header.",
         "✗ Shortlist Decision: Would NOT recommend for interview",
-        "Critical honesty issue: Multiple instances of listing future-dated 'Experience' (International Software Solutions Inc, June 2025 – August 2025), 'Projects' (School Management System, June 2025), 'Extracurricular Activities' (IAD DAYS 2025), and 'Certifications' (Tata Data Visualization, February 2025) as if they are completed.",
-        "Weak ownership and generic descriptions in the 'Vlog Innovations' internship, lacking specific individual contributions, tools, or impact.",
-        "Inclusion of outdated and marginally relevant extracurricular activities ('National and State Level Rifle Shooter') that consume valuable resume space without contributing to professional relevance."
+        "Numerous claims (e.g., 'measurable impact', 'leadership', 'teamwork', 'professional communication') lack explicit, quantified proof."
       ]
     },
     "resume_improvements": {
       "keyword_and_skills": [
         {
-          "issue": "Some bullet points lack structure - add action verbs and outcomes",
+          "issue": "Insufficient action verbs in experience descriptions",
           "recommended_fix": "Start bullet points with strong action verbs like: Developed, Implemented, Led, Designed, Optimized, Achieved, Managed",
           "reason": "Improves ATS keyword matching and demonstrates relevant expertise"
         },
         {
-          "issue": "Resume appears to target junior positions",
-          "recommended_fix": "Ensure your skills and experience align with junior role expectations. Add relevant certifications or advanced skills if targeting higher levels.",
+          "issue": "Missing quantifiable achievements (add metrics, percentages, numbers)",
+          "recommended_fix": "Add specific metrics: percentages, dollar amounts, user counts, or time savings (e.g., 'Improved performance by 40%')",
+          "reason": "Improves ATS keyword matching and demonstrates relevant expertise"
+        },
+        {
+          "issue": "Resume appears to target mid-level positions",
+          "recommended_fix": "Ensure your skills and experience align with mid-level role expectations. Add relevant certifications or advanced skills if targeting higher levels.",
           "reason": "Aligns resume presentation with career level and target roles"
+        },
+        {
+          "issue": "Vague claims and unsupported soft skill assertions.",
+          "recommended_fix": "Replace subjective claims with specific, action-oriented examples that demonstrate these skills through concrete achievements and their outcomes. Focus on what you did, how you did it, and what the result was. | Example: LEADERSHIP AND INVOLVEMENT: Led a 3-person development team in the successful deployment of the Validly AI Agent, coordinating feature delivery and technical integrations, resulting in a 20% reduction in project timeline over initial estimates.",
+          "reason": "Human Reviewer: Statements like 'Demonstrated leadership', 'Strong leadership & team collaboration', 'Effective communicator', or 'Gained experience in teamwork' are subjective and lack objective evidence. A strict reviewer will dismiss these as unsupported claims that anyone could make, undermining trust."
         }
       ],
       "content_and_bullets": [
         {
-          "issue": "Impact-driven content needs enhancement",
-          "recommended_fix": "Metrics & Impact Score: 20/100",
-          "reason": "Highlights business value and measurable outcomes"
+          "issue": "CRITICAL: No bullet points found - use bullets for achievements",
+          "recommended_fix": "Use bullet points (•, -, or *) to list responsibilities and achievements for better scannability",
+          "reason": "Makes accomplishments more impactful and measurable"
         },
         {
-          "issue": "Weak ownership signals and generic descriptions in 'Vlog Innovations' internship experience.",
-          "recommended_fix": "Rephrase bullets to use strong action verbs, quantify achievements, and specify tools/technologies used, focusing on what *you* specifically did and the *outcome* of your actions. Even in a collaborative environment, highlight your distinct role. | Example: Developed and documented an end-to-end machine learning pipeline using scikit-learn for [specific task], reducing manual data preparation time by 10% and improving model iteration speed.",
-          "reason": "Human Reviewer: Bullets like 'Gained hands-on experience,' 'Collaborated with a team,' and 'Contributed to' are passive and fail to convey specific individual achievements, tools used, or the direct impact made. This makes the experience appear less substantive and makes it difficult for a reviewer to understand the candidate's personal contributions and capabilities."
+          "issue": "Impact-driven content needs enhancement",
+          "recommended_fix": "Metrics & Impact Score: 60/100",
+          "reason": "Highlights business value and measurable outcomes"
         }
       ],
       "projects_and_experience": [
         {
           "issue": "Experience depth could be improved",
-          "recommended_fix": "Evidence & Depth Score: 30/100",
+          "recommended_fix": "Evidence & Depth Score: 75/100",
           "reason": "Demonstrates substantive experience rather than surface-level claims"
         },
         {
-          "issue": "Listing future experiences/projects/certifications as completed.",
-          "recommended_fix": "Remove all entries with future dates from 'Experience,' 'Projects,' and 'Certifications.' If an internship offer is accepted but not yet started, it can be briefly mentioned under a 'Pending Experience' or 'Education' section, clearly stating its future start date and expected duration, without detailed bullet points of work yet to be done. Similarly, 'projects' not yet started should not appear. | Example: Nithisshkrishna K S | Accepted Offer: Data Analysis and Web Development Intern, International Software Solutions Inc (June 2025 – August 2025). (This clarifies the future nature without detailing work not yet performed).",
-          "reason": "Human Reviewer: This is a fundamental breach of trust. A strict human reviewer (especially a hiring manager) assumes all listed experiences are factual and completed. Listing future activities as current or past demonstrates a severe lack of integrity, misrepresentation, and would likely lead to immediate disqualification. It suggests an attempt to dishonestly inflate qualifications."
+          "issue": "Lack of quantified impact and 'why' for projects.",
+          "recommended_fix": "For each project, clearly state the problem addressed, the solution's impact (quantified if possible, e.g., reduced time by X%, improved accuracy by Y%, handled Z users), and the specific outcomes or benefits for users/stakeholders. | Example: Certificate Automation System: Developed an automated certificate generation system using React and FastAPI, reducing manual processing time by 80% and efficiently processing over 500 certificate requests per event, streamlining club administration.",
+          "reason": "Human Reviewer: Strict human reviewers prioritize measurable results and the underlying purpose/problem a project solved. Without these, projects appear as academic exercises or tasks completed, rather than valuable contributions with tangible benefits. 'Measurable impact' is claimed but not proven."
         }
       ],
       "structure_and_formatting": [
         {
-          "issue": "Structure could be optimized",
-          "recommended_fix": "Use a clear hierarchy: Contact → Summary → Skills → Experience → Education → Projects",
-          "reason": "Follows standard resume format expected by recruiters and ATS"
+          "issue": "Location information not clearly stated",
+          "recommended_fix": "Review formatting for consistency and professional appearance",
+          "reason": "Improves readability and professional appearance"
         }
       ],
       "ats_compatibility": [
         {
-          "issue": "Inclusion of outdated and marginally relevant extracurricular activity.",
-          "recommended_fix": "Either remove the activity entirely to allocate more space to recent and relevant experiences, or, if absolutely desired, condense it into a single line under a dedicated 'Interests' or 'Hobbies' section without attempting to justify its professional relevance. | Example: National and State Level Rifle Shooter (2017-2020) - Secured Silver Medal at State Championship.",
-          "reason": "Human Reviewer: While impressive, an achievement from 2017-2020 (ending before B.Tech studies began) for rifle shooting has minimal direct relevance to a Data Science/Analyst role. The attempt to force a connection to 'data-driven problem-solving' is generic and unconvincing. Resume space is valuable and should be optimized for recent, relevant, and impactful professional or academic experiences."
+          "issue": "CRITICAL: Missing email address",
+          "recommended_fix": "Review and address this issue to improve ATS compatibility",
+          "reason": "Helps ATS systems better understand your qualifications"
+        },
+        {
+          "issue": "Generic descriptions in club roles and internships.",
+          "recommended_fix": "Elaborate on the specific technical challenges faced, the unique approach or tools used to solve them, and the direct impact or value generated by your work. Provide context for what was built or implemented. | Example: TECHNICAL ASSOCIATE (DEVS CLUB REC): Engineered a Python-based text recognition tool using OpenCV and Tesseract to automate data extraction from event sign-up sheets, improving data processing speed by 40% and reducing manual errors by 25%.",
+          "reason": "Human Reviewer: Bullet points such as 'Worked on technical implementations' or 'Built certificate generator & text recognition tools' (without specific context or impact) are too general. They fail to convey the complexity, specific skills applied, or the value created, making the experience seem trivial or easily repeatable from a tutorial."
         }
       ]
     },
     "rubric_feedback": {
       "trusted_signals": [
-        "Strong technical execution and quantifiable impact in 'Ordinal' and 'Customer Attrition Prediction' projects, demonstrating solid data science skills and ownership.",
-        "Publication in a journal indicates academic rigor and ability to contribute to the field.",
-        "Clear listing of relevant technical skills (Python, SQL, R, Spark, ML/DL) that align with data roles."
+        "Demonstrated proficiency in computer vision and LLM integration via multiple projects.",
+        "Clear ownership of technical projects, leveraging diverse tech stacks (e.g., FastAPI, React, OpenCV, YOLOv8, Meta LLM).",
+        "Achieved specific, verifiable awards (Kaggle runner-up, Hackathon finalist)."
       ],
       "red_flags": [
-        "Critical honesty issue: Multiple instances of listing future-dated 'Experience' (International Software Solutions Inc, June 2025 – August 2025), 'Projects' (School Management System, June 2025), 'Extracurricular Activities' (IAD DAYS 2025), and 'Certifications' (Tata Data Visualization, February 2025) as if they are completed.",
-        "Weak ownership and generic descriptions in the 'Vlog Innovations' internship, lacking specific individual contributions, tools, or impact.",
-        "Inclusion of outdated and marginally relevant extracurricular activities ('National and State Level Rifle Shooter') that consume valuable resume space without contributing to professional relevance."
+        "Numerous claims (e.g., 'measurable impact', 'leadership', 'teamwork', 'professional communication') lack explicit, quantified proof.",
+        "Absence of 'why' (problem solved, user benefit) for most projects, reducing perceived purpose and impact.",
+        "Vague descriptions (e.g., 'worked on technical implementations', 'gained experience') limit understanding of specific contributions and challenges.",
+        "Lack of non-trivial effort indicators (e.g., debugging complex issues, optimizing performance, handling scalability) diminishes perceived difficulty of work."
       ],
       "learning_takeaways": [
-        "Always ensure all listed experiences, projects, and certifications are *completed* and accurately dated. Listing future activities as past or present is a critical honesty violation.",
-        "Quantify your impact and specify your contributions using strong action verbs. Avoid generic phrases that do not highlight your individual ownership and technical involvement.",
-        "Prioritize relevance and recency in all resume sections. Only include extracurriculars or older achievements if they are highly relevant or exceptionally impressive and cannot be conveyed elsewhere, or condense them significantly."
+        "Always quantify achievements and impact using metrics (percentages, numbers, time saved, etc.).",
+        "For every project, clearly articulate the 'why' – the problem it solved or the specific benefit it provided.",
+        "Replace generic verbs ('worked on', 'involved in') with strong, action-oriented verbs that demonstrate ownership and specific contributions ('designed', 'built', 'implemented', 'optimized').",
+        "Substantiate soft skills (leadership, communication) with concrete examples of actions taken and their measurable outcomes, rather than just stating them.",
+        "Detail the technical challenges encountered and the solutions implemented to demonstrate depth and non-trivial effort.",
+        "Ensure every statement provides explicit proof for any claim, aligning with an evidence-based review approach."
       ]
     }
   },
   "enhancement": {
     "success": true,
-    "enhancement_json_path": "Nithisshkrishna_K_S_Resume_Enhancements.json",
-    "enhanced_text_path": "Nithisshkrishna_K_S_Resume_Enhanced.txt",
-    "original_text_path": "Nithisshkrishna_K_S_Resume_Original.txt",
-    "comparison_path": "Nithisshkrishna_K_S_Resume_Comparison.txt",
-    "enhanced_pdf_path": "Nithisshkrishna_K_S_Resume_Enhanced.pdf",
-    "enhancements_count": 24,
+    "enhancement_json_path": "nandhini_resume__Enhancements.json",
+    "enhanced_text_path": "nandhini_resume__Enhanced.txt",
+    "original_text_path": "nandhini_resume__Original.txt",
+    "comparison_path": "nandhini_resume__Comparison.txt",
+    "enhanced_pdf_path": "nandhini_resume__Enhanced.pdf",
+    "enhancements_count": 11,
     "improvements_applied": [
       "Enhanced resume content with LLM while preserving structure",
       "Created PDF-rebuild version with EXACT line count preservation",
@@ -119,6 +140,7 @@
       "Maintained all dates, roles, and original information",
       "Generated pixel-perfect enhanced PDF with preserved layout"
     ],
-    "message": "Generated 24 enhancements successfully!"
+    "candidate_name": "Global_Ltd",
+    "message": "Generated 11 enhancements successfully!"
   }
 }
