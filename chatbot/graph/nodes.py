@@ -150,6 +150,7 @@ class GraphNodes:
     def external_knowledge_node(self, state: ChatbotState) -> ChatbotState:
         """
         Node: Generate response using Gemini (external path).
+        Auto-ingests the Q&A pair into Qdrant for future retrieval.
         
         Args:
             state: Current state
@@ -166,6 +167,21 @@ class GraphNodes:
             conversation_history=formatted_history
         )
         state["gemini_response"] = gemini_response
+        
+        # Auto-ingest Q&A pair into Qdrant for future retrieval
+        try:
+            import sys
+            print("\n=== AUTO-INGESTION ===" , file=sys.stderr)
+            print(f"Ingesting Q&A pair into Qdrant...", file=sys.stderr)
+            success = self.retriever.ingest_qa_pair(query, gemini_response)
+            if success:
+                print(f"✓ Q&A pair successfully ingested", file=sys.stderr)
+            else:
+                print(f"✗ Failed to ingest Q&A pair", file=sys.stderr)
+            print("=====================\n", file=sys.stderr)
+        except Exception as e:
+            import sys
+            print(f"Error during auto-ingestion: {e}", file=sys.stderr)
         
         return state
     

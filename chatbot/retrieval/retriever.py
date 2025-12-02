@@ -168,3 +168,59 @@ Content:
             context_parts.append(formatted_chunk)
         
         return "\n---\n".join(context_parts)
+    
+    def ingest_qa_pair(self, question: str, answer: str) -> bool:
+        """
+        Ingest a single Q&A pair into Qdrant for future retrieval.
+        
+        Args:
+            question: The user's question
+            answer: The generated answer
+            
+        Returns:
+            True if successful, False otherwise
+        """
+        if not question or not answer:
+            return False
+        
+        try:
+            from qdrant_client.models import PointStruct
+            import uuid
+            
+            # Create content combining question and answer
+            content = f"Question: {question}\n\nAnswer: {answer}"
+            
+            # Generate embedding for the question (for retrieval)
+            embedding = self.embedding_generator.generate_embedding(question)
+            
+            # Create metadata
+            metadata = {
+                "document_type": "Generated Q&A",
+                "company": "General Knowledge",
+                "source": "Gemini LLM",
+                "question": question,
+                "answer": answer
+            }
+            
+            # Create point
+            point = PointStruct(
+                id=str(uuid.uuid4()),
+                vector=embedding.tolist(),
+                payload={
+                    "content": content,
+                    **metadata
+                }
+            )
+            
+            # Upsert to Qdrant
+            self.client.upsert(
+                collection_name=self.collection_name,
+                points=[point]
+            )
+            
+            print(f"✓ Ingested Q&A pair into Qdrant")
+            return True
+            
+        except Exception as e:
+            print(f"Error ingesting Q&A pair: {e}")
+            return False
