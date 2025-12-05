@@ -115,6 +115,8 @@ class GraphNodes:
     def rag_answer_node(self, state: ChatbotState) -> ChatbotState:
         """
         Node: Generate answer using RAG with Gemini.
+        First checks for cached Q&A pairs with high similarity.
+        If no good retrieval, falls back to external knowledge.
         
         Args:
             state: Current state
@@ -122,13 +124,35 @@ class GraphNodes:
         Returns:
             Updated state with generated answer
         """
+        import sys
+        
         if not state.get("retrieval_valid", False):
-            state["answer"] = FALLBACK_RESPONSE
-            return state
+            # No good retrieval results, fall back to external knowledge (Gemini)
+            print("→ No good retrieval results, using external knowledge", file=sys.stderr)
+            return self.external_knowledge_node(state)
         
         query = state.get("query", "")
         filtered_docs = state.get("filtered_docs", [])
         formatted_history = state.get("formatted_history", "")
+        
+        # Check for cached Q&A pairs with very high similarity (>0.95)
+        from config.settings import EXACT_MATCH_THRESHOLD
+        
+        for doc in filtered_docs:
+            similarity = doc.get('similarity_score', 0)
+            metadata = doc.get('metadata', {})
+            doc_type = metadata.get('document_type', '')
+            
+            # If this is a cached Q&A pair with very high similarity, return it directly
+            if doc_type == 'Generated Q&A' and similarity >= EXACT_MATCH_THRESHOLD:
+                cached_answer = metadata.get('answer', '')
+                if cached_answer:
+                    print(f"✓ Using cached answer (similarity: {similarity:.4f})", file=sys.stderr)
+                    state["answer"] = cached_answer
+                    return state
+        
+        # No cached answer found, generate new one
+        print("→ Generating new answer with LLM", file=sys.stderr)
         
         # Format context
         context = self.retriever.format_retrieved_context(filtered_docs)

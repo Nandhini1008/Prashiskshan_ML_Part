@@ -30,10 +30,13 @@ ENV CHATBOT_SERVICE_PORT=5001
 ENV CHATBOT_SERVICE_HOST=0.0.0.0
 ENV PYTHONUNBUFFERED=1
 
-# Health check (using curl or wget if available, otherwise Python)
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:5001/health')" || exit 1
+# Install curl for health checks
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
-# Run the chatbot service
-CMD ["python", "chatbot_service.py"]
+# Health check using curl
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD curl -f http://localhost:5001/health || exit 1
+
+# Run the chatbot service (using SSE version)
+CMD ["python", "chatbot_service_sse.py"]
 

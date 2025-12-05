@@ -164,4 +164,22 @@ class GeminiLLM:
         """
         prompt = f"{context}\n\nQuestion: {question}"
         return self.generate_response(prompt)
+    
+    def generate_rag_answer(self, context: str, question: str, conversation_history: str = "") -> str:
+        """
+        Generate RAG answer with retrieved context and conversation history.
+        
+        Args:
+            context: Retrieved context from vector database
+            question: User question
+            conversation_history: Optional formatted conversation history
+            
+        Returns:
+            Generated response
+        """
+        if conversation_history:
+            prompt = f"{GEMINI_SYSTEM_PROMPT}\n\n{conversation_history}\n\nRelevant Context:\n{context}\n\nUser Question: {question}\n\nAssistant:"
+        else:
+            prompt = f"{GEMINI_SYSTEM_PROMPT}\n\nRelevant Context:\n{context}\n\nUser Question: {question}\n\nAssistant:"
+        return self._call_api(prompt)
 

@@ -2,5 +2,4 @@
 learn/
 .dockerignore
 __pycache__/
-KarthikR_Resume_Updated_2025.pdf
-Sarvesh-Raghavan.pdf
+output/

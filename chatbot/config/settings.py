@@ -16,7 +16,7 @@ load_dotenv(dotenv_path=env_path)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 
 # LLM Configuration
-GEMINI_MODEL = "gemini-2.0-flash-exp"
+GEMINI_MODEL = "gemini-2.5-flash"
 
 # LLM Parameters
 GEMINI_TEMPERATURE = 0.4
@@ -32,6 +32,7 @@ EMBEDDING_DIMENSION = 384
 # Retrieval Configuration
 TOP_K_RESULTS = 5
 SIMILARITY_THRESHOLD = 0.50
+EXACT_MATCH_THRESHOLD = 0.90  # High threshold for cached Q&A pairs
 
 # Chunking Configuration
 CHUNK_SIZE = 500

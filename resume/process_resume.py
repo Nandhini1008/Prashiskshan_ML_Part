@@ -83,12 +83,14 @@ class ResumeProcessor:
                 enhancement_result = self._enhance_resume(
                     pdf_path, 
                     resume_text, 
-                    evaluation
+                    evaluation,
+                    save_files=False  # Don't save files, return data directly
                 )
                 
                 if enhancement_result.get('success'):
-                    print(f"✓ Enhanced text saved: {enhancement_result.get('enhanced_text_path', 'N/A')}")
-                    print(f"   Applied {len(enhancement_result.get('improvements_applied', []))} improvements")
+                    enhancements_count = enhancement_result.get('enhancements_count', 0)
+                    print(f"✓ Generated {enhancements_count} enhancements")
+                    print(f"   Enhancement JSON data included in response")
                 else:
                     print(f"⚠ Enhancement failed: {enhancement_result.get('error')}")
             
@@ -116,21 +118,6 @@ class ResumeProcessor:
                 'resume_text': None,
                 'evaluation': None,
                 'enhancement': None
-            }
-            
-        except FileNotFoundError:
-            return {
-                'success': False,
-                'error': f'PDF file not found: {pdf_path}',
-                'resume_text': None,
-                'evaluation': None
-            }
-        except Exception as e:
-            return {
-                'success': False,
-                'error': f'Processing failed: {str(e)}',
-                'resume_text': None,
-                'evaluation': None
             }
     
     def _extract_text_from_pdf(self, pdf_path: str, use_ocr: bool) -> str:
@@ -182,7 +169,8 @@ class ResumeProcessor:
         self,
         pdf_path: str,
         resume_text: str,
-        evaluation: Dict[str, Any]
+        evaluation: Dict[str, Any],
+        save_files: bool = False
     ) -> Dict[str, Any]:
         """
         Enhance resume based on evaluation results.
@@ -191,9 +179,10 @@ class ResumeProcessor:
             pdf_path: Path to original PDF
             resume_text: Extracted resume text
             evaluation: Evaluation results
+            save_files: If True, save files to disk. If False, return data only.
             
         Returns:
-            Dictionary with enhancement results
+            Dictionary with enhancement results including full JSON data
         """
         try:
             # Import simple enhancer
@@ -204,7 +193,12 @@ class ResumeProcessor:
             
             # Use simple text-based enhancement
             enhancer = SimpleResumeEnhancer()
-            result = enhancer.enhance_resume_text(pdf_path, resume_text, evaluation)
+            result = enhancer.enhance_resume_text(
+                pdf_path, 
+                resume_text, 
+                evaluation,
+                save_files=save_files
+            )
             
             if not result.get('success'):
                 return result
@@ -212,26 +206,34 @@ class ResumeProcessor:
             # Track improvements
             improvements_applied = [
                 "Enhanced resume content with LLM while preserving structure",
-                "Created PDF-rebuild version with EXACT line count preservation",
                 "Improved wording for clarity and professionalism",
                 "Strengthened action verbs and technical language",
                 "Added impact context without inventing metrics",
-                "Maintained all dates, roles, and original information",
-                "Generated pixel-perfect enhanced PDF with preserved layout"
+                "Maintained all dates, roles, and original information"
             ]
             
-            return {
+            # Build response with full enhancement JSON data
+            response = {
                 'success': True,
-                'enhancement_json_path': result.get('enhancement_json_path'),
-                'enhanced_text_path': result.get('enhanced_text_path'),
-                'original_text_path': result.get('original_text_path'),
-                'comparison_path': result.get('comparison_path'),
-                'enhanced_pdf_path': result.get('enhanced_pdf_path'),
+                'enhancement': result.get('enhancement'),  # Full enhancement JSON
+                'enhanced_text': result.get('enhanced_text'),  # Enhanced text content
                 'enhancements_count': result.get('enhancements_count', 0),
                 'improvements_applied': improvements_applied,
                 'candidate_name': candidate_name,
-                'message': result.get('message', 'Enhanced PDF created successfully!')
+                'message': result.get('message', 'Enhancements generated successfully!')
             }
+            
+            # Include file paths only if files were saved
+            if save_files:
+                response.update({
+                    'enhancement_json_path': result.get('enhancement_json_path'),
+                    'enhanced_text_path': result.get('enhanced_text_path'),
+                    'original_text_path': result.get('original_text_path'),
+                    'comparison_path': result.get('comparison_path'),
+                    'enhanced_pdf_path': result.get('enhanced_pdf_path'),
+                })
+            
+            return response
             
         except Exception as e:
             return {
@@ -415,17 +417,12 @@ def main():
                 for imp in items[:2]:
                     print(f"      • {imp['recommended_fix']}")
         
-        # Save to file if requested
+        # Save to file if requested (for CLI usage only)
         if args.output:
             with open(args.output, 'w', encoding='utf-8') as f:
                 json.dump(result, f, indent=2, ensure_ascii=False)
             print(f"\n💾 Full results saved to: {args.output}")
-        else:
-            # Save to default location
-            output_file = 'resume_evaluation_result.json'
-            with open(output_file, 'w', encoding='utf-8') as f:
-                json.dump(result, f, indent=2, ensure_ascii=False)
-            print(f"\n💾 Full results saved to: {output_file}")
+        # Note: When used as API backend, results are returned directly without saving files
         
         
         # Display enhancement results

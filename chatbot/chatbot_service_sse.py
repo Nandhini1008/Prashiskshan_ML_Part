@@ -10,6 +10,8 @@ import sys
 import os
 import json
 import time
+import threading
+import queue
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from main import RAGChatbot
@@ -33,12 +35,16 @@ def pre_warm_pipeline(bot):
     try:
         print("  → Loading sentence transformer into memory...", file=sys.stderr)
         dummy_text = "This is a warm-up query to load the embedding model"
-        bot.retriever.embedder.encode([dummy_text])
+        bot.retriever.embedding_generator.generate_embedding(dummy_text)
         print("  ✓ Sentence transformer loaded", file=sys.stderr)
         
-        print("  → Warming up Qdrant ANN indexes...", file=sys.stderr)
-        bot.retriever.retrieve(dummy_text)
-        print("  ✓ Qdrant indexes warmed", file=sys.stderr)
+        print("  → Warming up Qdrant connection...", file=sys.stderr)
+        # Try a simple retrieve to warm up the connection
+        try:
+            bot.retriever.retrieve(dummy_text, top_k=1)
+            print("  ✓ Qdrant connection warmed", file=sys.stderr)
+        except Exception as e:
+            print(f"  ⚠️  Qdrant warmup skipped (may not be available): {e}", file=sys.stderr)
         
         elapsed = time.time() - start_time
         print(f"✅ Pipeline pre-warmed in {elapsed:.2f}s", file=sys.stderr)
@@ -83,28 +89,98 @@ def chunk_text(text, chunk_size=30):
 
 
 def generate_sse_response(query_text, user_id, session_id):
-    """Generator function for SSE streaming."""
+    """Generator function for SSE streaming with keepalive."""
+    result_queue = queue.Queue()
+    error_occurred = threading.Event()
+    
+    def query_worker():
+        """Worker thread to execute the query."""
+        try:
+            bot = initialize_chatbot()
+            full_response = bot.query(query_text, user_id, session_id)
+            result_queue.put(('success', full_response))
+        except Exception as e:
+            print(f"Error in query worker: {e}", file=sys.stderr)
+            import traceback
+            traceback.print_exc()
+            result_queue.put(('error', str(e)))
+            error_occurred.set()
+    
     try:
-        bot = initialize_chatbot()
+        # Send start event immediately
         yield f"data: {json.dumps({'type': 'start'})}\n\n"
         
-        full_response = bot.query(query_text, user_id, session_id)
+        # Start query in background thread
+        worker = threading.Thread(target=query_worker, daemon=True)
+        worker.start()
         
-        for chunk in chunk_text(full_response, chunk_size=30):
-            yield f"data: {json.dumps({'type': 'chunk', 'content': chunk})}\n\n"
-            time.sleep(0.01)
+        # Send keepalive messages while waiting for response
+        keepalive_count = 0
+        while worker.is_alive():
+            try:
+                # Check if result is ready (non-blocking with timeout)
+                status, result = result_queue.get(timeout=2.0)
+                
+                if status == 'error':
+                    yield f"data: {json.dumps({'type': 'error', 'error': result})}\n\n"
+                    return
+                elif status == 'success':
+                    # Stream the response in chunks
+                    if result and result.strip():
+                        for chunk in chunk_text(result, chunk_size=30):
+                            yield f"data: {json.dumps({'type': 'chunk', 'content': chunk})}\n\n"
+                            time.sleep(0.01)
+                    else:
+                        yield f"data: {json.dumps({'type': 'chunk', 'content': 'I apologize, but I could not generate a response. Please try rephrasing your question.'})}\n\n"
+                    
+                    yield f"data: {json.dumps({'type': 'done'})}\n\n"
+                    return
+                    
+            except queue.Empty:
+                # Still processing - send keepalive
+                keepalive_count += 1
+                if keepalive_count <= 15:  # Max 30 seconds of keepalives
+                    yield f"data: {json.dumps({'type': 'keepalive'})}\n\n"
+                else:
+                    # Timeout after 30 seconds
+                    yield f"data: {json.dumps({'type': 'error', 'error': 'Request timeout - please try again'})}\n\n"
+                    return
         
-        yield f"data: {json.dumps({'type': 'done'})}\n\n"
+        # Worker finished - get final result
+        if not result_queue.empty():
+            status, result = result_queue.get_nowait()
+            if status == 'success' and result:
+                for chunk in chunk_text(result, chunk_size=30):
+                    yield f"data: {json.dumps({'type': 'chunk', 'content': chunk})}\n\n"
+                    time.sleep(0.01)
+                yield f"data: {json.dumps({'type': 'done'})}\n\n"
+            elif status == 'error':
+                yield f"data: {json.dumps({'type': 'error', 'error': result})}\n\n"
         
     except Exception as e:
+        print(f"Error in SSE generator: {e}", file=sys.stderr)
+        import traceback
+        traceback.print_exc()
         yield f"data: {json.dumps({'type': 'error', 'error': str(e)})}\n\n"
 
 @app.route('/health', methods=['GET'])
 def health():
+    redis_connected = False
+    if chatbot is not None:
+        try:
+            # Check Redis connection
+            if chatbot.memory.redis_client:
+                chatbot.memory.redis_client.ping()
+                redis_connected = True
+        except Exception as e:
+            print(f"Redis health check failed: {e}", file=sys.stderr)
+            redis_connected = False
+    
     return jsonify({
         "status": "ok",
         "chatbot_initialized": chatbot is not None,
-        "pipeline_warmed": is_warmed_up
+        "pipeline_warmed": is_warmed_up,
+        "redis_connected": redis_connected
     })
 
 @app.route('/query', methods=['POST'])
@@ -117,14 +193,24 @@ def query():
         query_text = data.get('query')
         
         if not user_id or not session_id:
-            return jsonify({"error": "user_id and session_id are required"}), 400
+            return jsonify({
+                "error": "user_id and session_id are required",
+                "code": "VALIDATION_ERROR"
+            }), 400
         
         if not query_text or not query_text.strip():
-            return jsonify({"error": "query is required"}), 400
+            return jsonify({
+                "error": "query is required",
+                "code": "VALIDATION_ERROR"
+            }), 400
         
         # Get full response (non-streaming for Node.js backend)
         bot = initialize_chatbot()
+        start_time = time.time()
         response = bot.query(query_text, user_id, session_id)
+        elapsed = time.time() - start_time
+        
+        print(f"Query processed in {elapsed:.2f}s for user {user_id[:8]}...", file=sys.stderr)
         
         return jsonify({
             "success": True,
@@ -133,7 +219,13 @@ def query():
         })
     
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        print(f"Error processing query: {e}", file=sys.stderr)
+        import traceback
+        traceback.print_exc()
+        return jsonify({
+            "error": str(e),
+            "code": "INTERNAL_ERROR"
+        }), 500
 
 @app.route('/query-stream', methods=['POST'])
 def query_stream():
@@ -145,10 +237,18 @@ def query_stream():
         query_text = data.get('query')
         
         if not user_id or not session_id:
-            return jsonify({"error": "user_id and session_id are required"}), 400
+            return jsonify({
+                "error": "user_id and session_id are required",
+                "code": "VALIDATION_ERROR"
+            }), 400
         
         if not query_text or not query_text.strip():
-            return jsonify({"error": "query is required"}), 400
+            return jsonify({
+                "error": "query is required",
+                "code": "VALIDATION_ERROR"
+            }), 400
+        
+        print(f"Starting SSE stream for user {user_id[:8]}...", file=sys.stderr)
         
         return Response(
             generate_sse_response(query_text, user_id, session_id),
@@ -161,7 +261,13 @@ def query_stream():
         )
     
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        print(f"Error in SSE stream: {e}", file=sys.stderr)
+        import traceback
+        traceback.print_exc()
+        return jsonify({
+            "error": str(e),
+            "code": "INTERNAL_ERROR"
+        }), 500
 
 @app.route('/clear', methods=['POST'])
 def clear_session():
@@ -172,7 +278,7 @@ def clear_session():
         session_id = data.get('session_id')
         
         if not user_id or not session_id:
-            return jsonify({"error": "user_id and session_id are required"}), 400
+            return jsonify({"error": "user_id and session_id are required", "code": "VALIDATION_ERROR"}), 400
         
         bot = initialize_chatbot()
         bot.clear_session(user_id, session_id)
@@ -180,7 +286,35 @@ def clear_session():
         return jsonify({"success": True, "message": "Session cleared"})
     
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        print(f"Error clearing session: {e}", file=sys.stderr)
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": str(e), "code": "INTERNAL_ERROR"}), 500
+
+@app.route('/history', methods=['GET'])
+def get_history():
+    """Get conversation history for a session."""
+    try:
+        user_id = request.args.get('user_id')
+        session_id = request.args.get('session_id')
+        
+        if not user_id or not session_id:
+            return jsonify({"error": "user_id and session_id are required", "code": "VALIDATION_ERROR"}), 400
+        
+        bot = initialize_chatbot()
+        history = bot.memory.get_history(user_id, session_id)
+        
+        return jsonify({
+            "success": True,
+            "history": history,
+            "sessionId": session_id
+        })
+    
+    except Exception as e:
+        print(f"Error retrieving history: {e}", file=sys.stderr)
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": str(e), "code": "INTERNAL_ERROR"}), 500
 
 @app.after_request
 def after_request(response):

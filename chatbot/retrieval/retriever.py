@@ -169,29 +169,72 @@ Content:
         
         return "\n---\n".join(context_parts)
     
-    def ingest_qa_pair(self, question: str, answer: str) -> bool:
+    def ingest_qa_pair(self, question: str, answer: str, similarity_threshold: float = 0.95) -> bool:
         """
         Ingest a single Q&A pair into Qdrant for future retrieval.
+        Checks for duplicates before storing to avoid redundancy.
         
         Args:
             question: The user's question
             answer: The generated answer
+            similarity_threshold: Threshold to consider a Q&A as duplicate (default: 0.95)
             
         Returns:
-            True if successful, False otherwise
+            True if successful or duplicate found, False on error
         """
         if not question or not answer:
             return False
         
         try:
-            from qdrant_client.models import PointStruct
+            from qdrant_client.models import PointStruct, Filter, FieldCondition, MatchValue
             import uuid
+            import sys
+            
+            # Generate embedding for the question
+            embedding = self.embedding_generator.generate_embedding(question)
+            
+            # Check if similar Q&A already exists in the database
+            # Search only in "Generated Q&A" documents
+            try:
+                search_results = self.client.query_points(
+                    collection_name=self.collection_name,
+                    query=embedding.tolist(),
+                    limit=5,  # Check top 5 similar documents
+                    query_filter=Filter(
+                        must=[
+                            FieldCondition(
+                                key="document_type",
+                                match=MatchValue(value="Generated Q&A")
+                            )
+                        ]
+                    ),
+                    with_payload=True,
+                    with_vectors=False
+                ).points
+                
+                # Check if any result is very similar (potential duplicate)
+                # Note: query_points returns ScoredPoint objects with score attribute
+                for result in search_results:
+                    # Get similarity score (query_points returns score directly)
+                    similarity_score = getattr(result, 'score', 0)
+                    
+                    if similarity_score >= similarity_threshold:
+                        existing_question = result.payload.get('question', '')
+                        print(f"⚠ Similar Q&A already exists (similarity: {similarity_score:.4f})", file=sys.stderr)
+                        print(f"  Existing: {existing_question[:100]}...", file=sys.stderr)
+                        print(f"  New: {question[:100]}...", file=sys.stderr)
+                        print(f"  → Skipping ingestion to avoid duplicate", file=sys.stderr)
+                        return True  # Return True as this is not an error
+                
+            except Exception as search_error:
+                # If search fails, continue with ingestion (better to have duplicate than lose data)
+                print(f"Warning: Duplicate check failed: {search_error}", file=sys.stderr)
+            
+            # No duplicate found, proceed with ingestion
+            print(f"→ No duplicate found, ingesting new Q&A pair", file=sys.stderr)
             
             # Create content combining question and answer
             content = f"Question: {question}\n\nAnswer: {answer}"
-            
-            # Generate embedding for the question (for retrieval)
-            embedding = self.embedding_generator.generate_embedding(question)
             
             # Create metadata
             metadata = {
@@ -218,9 +261,11 @@ Content:
                 points=[point]
             )
             
-            print(f"✓ Ingested Q&A pair into Qdrant")
+            print(f"✓ Q&A pair successfully ingested into Qdrant", file=sys.stderr)
             return True
             
         except Exception as e:
-            print(f"Error ingesting Q&A pair: {e}")
+            print(f"✗ Error ingesting Q&A pair: {e}", file=sys.stderr)
+            import traceback
+            traceback.print_exc(file=sys.stderr)
             return False

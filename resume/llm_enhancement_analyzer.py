@@ -143,7 +143,8 @@ Generate the JSON now:"""
 def analyze_and_generate_enhancements(
     resume_text: str,
     evaluation: Dict[str, Any],
-    output_path: str = None
+    output_path: str = None,
+    save_to_file: bool = False
 ) -> Dict[str, Any]:
     """
     Convenience function to generate enhancements.
@@ -151,19 +152,21 @@ def analyze_and_generate_enhancements(
     Args:
         resume_text: Original resume text
         evaluation: ATS evaluation results
-        output_path: Optional path to save enhancement JSON
+        output_path: Optional path to save enhancement JSON (only used if save_to_file=True)
+        save_to_file: If True, save to file. If False, only return data.
         
     Returns:
-        Enhancement results
+        Enhancement results with JSON data included
     """
     analyzer = LLMEnhancementAnalyzer()
     result = analyzer.generate_enhancements(resume_text, evaluation)
     
-    # Save to file if path provided
-    if result.get('success') and output_path:
+    # Save to file only if explicitly requested
+    if result.get('success') and save_to_file and output_path:
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(result['enhancements'], f, indent=2, ensure_ascii=False)
         print(f"✓ Enhancements saved to: {output_path}")
+        result['enhancement_json_path'] = output_path
     
     return result
 

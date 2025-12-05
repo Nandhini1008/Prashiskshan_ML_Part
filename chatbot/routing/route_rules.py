@@ -52,6 +52,7 @@ class RouteRules:
     def route_query(self, query: str) -> Dict[str, Any]:
         """
         Route a query to the appropriate pipeline.
+        ALWAYS tries RAG first to check cached Q&A pairs.
         
         Args:
             query: User query text
@@ -62,19 +63,18 @@ class RouteRules:
         # Classify intent
         intent = self.intent_router.classify_intent(query)
         
-        # Determine pipeline
-        use_rag = self.should_use_rag(intent)
-        use_external = self.should_use_external(intent)
-        
         # Get intent info
         intent_info = self.intent_router.get_intent_info(intent)
         
+        # ALWAYS use RAG first to check for cached answers
+        # If no good match is found (score < threshold), it will fall back to external
+        # This ensures we check the vector DB for all queries
         return {
             "intent": intent,
             "intent_name": intent_info.get("name", "Unknown"),
-            "use_rag": use_rag,
-            "use_external": use_external,
-            "pipeline": "RAG" if use_rag else "EXTERNAL"
+            "use_rag": True,  # Always try RAG first
+            "use_external": False,  # Will be handled by fallback in validate_node
+            "pipeline": "RAG"  # Always start with RAG
         }
     
     def get_pipeline_for_intent(self, intent: str) -> str:

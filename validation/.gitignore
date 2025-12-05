@@ -1,0 +1,5 @@
+.env
+chromedriver-win64/
+debug_html/
+outputs/
+__pycache__/
